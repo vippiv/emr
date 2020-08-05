@@ -19,9 +19,9 @@
                     </span>
                 </el-tree>
             </el-tab-pane>
-            <el-tab-pane label="护理记录单模板" name="second">
+            <!-- <el-tab-pane label="护理记录单模板" name="second">
                 <el-tree class="filter-tree" :data="hldata" :props="defaultProps" :filter-node-method="filterNode" ref="hltree" highlight-current @node-click="handleBlNodeClick"></el-tree>
-            </el-tab-pane>
+            </el-tab-pane> -->
         </el-tabs>
     </div>
 </template>
@@ -103,7 +103,8 @@
                 let data = {
                     DEPT_ID: val.id,
                     UserID: this.uerInfo.UserId,
-                    tag: val.Tag
+                    tag: val.Tag,
+                    label:val.label
                 }
                 this.GetSonTemplate(data).then(res => {
                     if (res.code == 1) {
@@ -131,6 +132,8 @@
                 this.getSonTemplate(data)
             },
             handleBlNodeClick(data, Node) {
+                console.log('data',data)
+                this.$emit('handleletnurstpl','')
                 if (data.filePath) {
                     // 加载文档
                     const args = {
@@ -188,7 +191,7 @@
         padding: 0 10px;
 
         .filter-tree {
-            height: calc(100vh - 260px);
+            height: calc(100vh - 250px);
             overflow-y: auto;
         }
     }
@@ -200,5 +203,14 @@
                 color: white;
             }
         }
+    }
+    .let-nursing-tml /deep/.el-tabs__active-bar{
+        background: none;
+    }
+    .let-nursing-tml /deep/.el-tabs__item.is-active{
+        color:#606266;
+    }
+    .let-nursing-tml /deep/#tab-first{
+        margin-left: 100px;
     }
 </style>

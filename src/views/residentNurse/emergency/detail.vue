@@ -1,7 +1,7 @@
 <template>
     <div class="medicine-record-detail-container">
         <div class="top-imgbtn-box">
-            <topImgBtn @actionSubEvent="handleSubEvent"></topImgBtn>
+            <topImgBtn :btnshow='false' @actionSubEvent="handleSubEvent"></topImgBtn>
         </div>
         <el-container style="height:calc(100vh - 120px);margin-top:10px;padding:0px 10px;">
             <el-aside width="260px" style="background-color:white;">
@@ -44,7 +44,7 @@
                 </el-tabs>
             </el-aside>
             <el-main>
-                <activeXHandler></activeXHandler>
+                <activeXHandler :nursingfilecode='nursingfilecode'></activeXHandler>
                 <div class="main-box">
                     <div class="main-imgbtn">
                         <!-- <ckBtn icon="ck-icon-search" @click="handleClicFn">常用语</ckBtn>
@@ -53,7 +53,7 @@
                         <contentShow></contentShow>
                     </div>
                     <div class="main-right">
-                        <letNursTpl></letNursTpl>
+                        <letNursTpl @handleletnurstpl='handleletnurstpl'></letNursTpl>
                     </div>
                 </div>
             </el-main>
@@ -113,6 +113,7 @@
         },
         data() {
             return {
+                nursingfilecode: '',
                 positionshow: false,
                 show: false,
                 leftTree: [],
@@ -296,8 +297,13 @@
                     this.getSYS_T_VISIT_1ByVisitId(this.patientID)
                 }
             },
+            handleletnurstpl(val) {
+                this.nursingfilecode = val
+            },
             // 打开odt文档
             handleShowThisData(obj) {
+                console.log('1111111111111111', obj)
+                this.nursingfilecode = obj.id
                 // this.SAVE_MEDISINE_OPERATION_DOC(obj) // 记录当前操作项      
                 if (this.activeXTab.length > 0) {
                     if (this.patientInfo.id === this.activeXTab[0].patientID) {
@@ -382,10 +388,9 @@
         user-select: none;
 
         .caption {
-            font-size: 18px;
-            background: #076979;
-            padding-left: 5px;
-            line-height: 2;
+            font-size: 16px;
+            background: #3CBCD3;
+            line-height: 1.8;
             color: white;
             text-align: center;
             letter-spacing: 5px;
@@ -393,9 +398,7 @@
 
         .desc {
             line-height: 2;
-            padding-left: 5px;
             text-align: center;
-
             span {
                 padding-right: 5px;
             }
@@ -433,5 +436,19 @@
 
     /deep/.el-main {
         padding: 0px 0px 0px 15px;
+    }
+    /deep/.el-card__body {
+        padding: 10px 10px;
+    }
+
+    /deep/.el-tabs__nav .is-top {
+        line-height: 30px;
+        height: 30px;
+    }
+
+    /deep/.el-tabs__nav-prev,
+    /deep/.el-tabs__nav-next {
+        line-height: 2.8;
+        height: 30px;
     }
 </style>

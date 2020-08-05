@@ -30,7 +30,7 @@
                         </el-col>
                     </el-row>
                 </el-form>
-                <el-table class="table-box" ref="singleTable" highlight-current-row :data="tableData" border style="width: 100%" size="mini" @row-click="getCurrentRow">
+                <el-table class="table-box" ref="singleTable" highlight-current-row :data="tableData" border height="calc(100vh - 538px)" style="width: 100%" size="mini" @row-click="getCurrentRow">
                     <el-table-column type="index" width="50"></el-table-column>
                     <el-table-column prop="ICD10" label="编码" align="center"></el-table-column>
                     <el-table-column prop="ICD10Name" label="名称" align="center"></el-table-column>
@@ -120,6 +120,9 @@
 </script>
 
 <style lang="scss" scoped>
+.ICD_10-international-code-container {
+    min-height: 560px;
+}
     // tree树当前行颜色
     /deep/.el-tree--highlight-current {
         .el-tree-node.is-current {
@@ -141,8 +144,9 @@
 
     .ypboxL,
     .ypboxR {
-        height: 55vh;
+        height: calc(100vh - 484px);
         overflow: hidden;
+        min-height: 570px;
     }
 
     .ypboxL {
@@ -151,7 +155,8 @@
     }
 
     .table-box {
-        height: 49.5vh;
+        // height: calc(100vh - 484px);
         overflow-y: auto;
+        min-height: 480px;
     }
 </style>

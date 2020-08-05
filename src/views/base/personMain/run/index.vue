@@ -5,11 +5,11 @@
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-modify" @click="handleEditClicFn">修改</ckImgBtn>
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-save" @click="handleSaveClicFn('form')">保存</ckImgBtn>
         </el-row>
-        <el-row class="basics">
-            <el-col :span="12" class="gen2">
+        <div class="basics">
+            <div class="gen2">
                 <!-- 下拉选择框 -->
                 <el-row class="gen1">
-                    <el-col :span="12" style="padding-left:10px">
+                    <el-col style="padding-left:10px">
                         科室:
                         <el-select v-model="departmentVal" placeholder="请选择" size="mini" @change="seclectChange">
                             <el-option v-for="item in options" :key="item.id" :label="item.label" :value="item.id">
@@ -19,7 +19,7 @@
                 </el-row>
                 <!-- 表格 -->
                 <el-row>
-                    <el-table :data="tableData" border @row-click="tableCurrent" highlight-current-row style="width: 100%;" height="calc(100vh - 263px)">
+                    <el-table :data="tableData" border @row-click="tableCurrent" highlight-current-row style="width: 100%;" height="calc(100vh - 330px)">
                         <el-table-column prop="STAFF_ID" label="工号" align="center">
                         </el-table-column>
                         <el-table-column prop="USER_NAME" label="姓名" align="center">
@@ -32,9 +32,9 @@
                     <ckPagination :currentPage="pageNos" :total="total" class="fix-width" @_pageSizeChange="pageSizeChange" @_currentPageChange="currentPageChange"></ckPagination>
                 </el-row>
 
-            </el-col>
+            </div>
             <!-- 右边表单 -->
-            <el-col :span="11" class="gen3">
+            <div class="gen3">
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane label="基本信息" name="first">
                         <div>
@@ -114,8 +114,8 @@
                         </el-row>
                     </el-tab-pane>
                 </el-tabs>
-            </el-col>
-        </el-row>
+            </div>
+        </div>
 
     </div>
 </template>
@@ -482,9 +482,9 @@
 
         .basics {
             height: calc(100vh - 214px);
-            margin: 4px 0 0 0;
             overflow-x: auto;
-            min-width: 948px;
+            display: flex;
+            justify-content: space-between;
         }
     }
 
@@ -494,7 +494,7 @@
         left: auto;
         right: 0;
         overflow-x: auto;
-        margin: 0 0 0 0;
+        margin: 0 0 -65px 0;
     }
 
     /deep/ .el-table__body tr:hover>td {
@@ -529,34 +529,27 @@
     }
 
     .gen1 {
-        margin: 9px 0;
+        border: 1px solid #E8EAED;
+        background-color: white;
+        color: #333;
+        padding: 10px 0 8px 7px;
     }
 
     .gen2 {
-        // height: 100%;
-        // height:calc(100vh - 263px);
+        width: 100%;
         border: 1px solid #99a9bf;
         overflow-y: auto;
         background-color: white;
         padding: 0 0 0 0;
+        margin-right: 6px;
     }
 
     .gen3 {
-        height: 100%;
+        width: 100%;
+        display: inline-flex;
         border: 1px solid #99a9bf;
         background-color: white;
         overflow-y: auto;
-        float: right;
-    }
-
-    /deep/.el-col-11 {
-        width: 47.83333%;
-        min-width: 456px;
-    }
-
-    /deep/.el-col-12 {
-        min-width: 492px;
-        box-sizing: border-box;
     }
 
     .gen4 {

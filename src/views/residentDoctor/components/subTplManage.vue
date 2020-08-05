@@ -110,7 +110,7 @@
                             <el-link type="primary" :underline="false">修改</el-link>
                         </li>
                         <li v-show="linkVisible" tabindex="-1" class="menu__item" @click="() =>handleCreateNew(nodeData)">
-                            <img class="icon" :src="newIcon">
+                            <img class="icon" :src="deleteIcon">
                             <el-link type="primary" :underline="false">删除</el-link>
                         </li>
                     </ul>
@@ -229,7 +229,7 @@
     import subTplManageWordEdit from '@/views/residentDoctor/components/subTplManageWordEdit'
     import insertIcon from '@/assets/images/icon/insert.png'
     import createIcon from '@/assets/images/icon/create.png'
-    import newIcon from '@/assets/images/icon/new.png'
+    import deleteIcon from '@/assets/images/icon/delete.png'
     const {
         mapActions
     } = createNamespacedHelpers('residentDoctor')
@@ -250,7 +250,7 @@
                 currentNodekey: '',
                 insertIcon,
                 createIcon,
-                newIcon,
+                deleteIcon,
                 wordcode: '',
                 wordshow: false, //控制word编辑组件显示/隐藏
                 urls,

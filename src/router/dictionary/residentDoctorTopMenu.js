@@ -154,7 +154,7 @@ const residentDoctorTopMenu = {
     },
     patientSearch: {
         en: 'patientSearch',
-        cn: '病人查询'
+        cn: '病人查询',
     },
     selfPayDrugNotify: {
         en: 'selfPayDrugNotify',

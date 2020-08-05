@@ -20,118 +20,118 @@
                         <td class="tb-w">{{ item.BedNo}}</td>
                         <td class="tb-w">{{ item.PAT_NAME}}</td>
                         <td class="tb-w">
-                            <el-input type="text" v-model="item.TP" size="mini" clearable></el-input>
+                            <el-input v-if="inputselectStatus" type="text" v-model="item.TP" size="mini" clearable></el-input>
                         </td>
                         <td class="tb-w">
-                            <el-input type="text" v-model="item.DB" size="mini" clearable></el-input>
+                            <el-input v-if="inputselectStatus" type="text" v-model="item.DB" size="mini" clearable></el-input>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Seven" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Seven" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.SevenHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.SevenHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Eight" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Eight" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.EightHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.EightHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Nine" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Nine" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.NineHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.NineHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Ten" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Ten" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.TenHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.TenHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Eleven" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Eleven" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.ElevenHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.ElevenHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Twelve" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Twelve" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.TwelveHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.TwelveHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Thirteen" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Thirteen" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.ThirteenHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.ThirteenHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Fourteen" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Fourteen" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.FiveteenHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.FiveteenHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Fiveteen" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Fiveteen" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.FiveteenHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.FiveteenHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Sixteen" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Sixteen" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.SixteenHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.SixteenHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.Seventeen" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.Seventeen" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
                         <td class="tb-w">
-                            <el-select v-model="item.SeventeenHalf" placeholder size="mini" clearable>
+                            <el-select v-if="inputselectStatus" v-model="item.SeventeenHalf" placeholder size="mini" clearable>
                                 <el-option v-for="item in optionsSelect" :key="item.idx" :label="item.ItemText" :value="item.ItemText"></el-option>
                             </el-select>
                         </td>
@@ -172,6 +172,7 @@
         name: 'nursingPatrol',
         data() {
             return {
+                inputselectStatus: false,
                 loading: true,
                 pageSize: 20,
                 pageNos: 1,
@@ -262,7 +263,8 @@
                         label: '17:30'
                     },
                 ],
-                nursingSingerData: []
+                nursingSingerData: [],
+                timer: null
             }
         },
         computed: {
@@ -275,6 +277,13 @@
             this.getNursingInspection()
             this.get_MASURIUM_DICT_ITEM()
             this.getNurseSingerName()
+        },
+        mounted() {
+            this.timer = setTimeout(() => {
+                this.inputselectStatus = true
+            }, 1000)
+            
+
         },
         methods: {
             ...mapActions([
@@ -373,6 +382,9 @@
                 })
             }
 
+        },
+        beforeDestroy() {
+            clearTimeout(this.timer)
         }
     }
 </script>

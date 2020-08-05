@@ -1,7 +1,9 @@
 <!-- 手术编码维护 -->
 <template>
     <div class="operation-code-container">
-        <ckImgBtn icon="ck-imgicon-save" @click="handleSave">确定</ckImgBtn>
+        <div class="imgBtnBox">
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-save" @click="handleSave">确定</ckImgBtn>
+        </div>
         <el-row>
             <el-col :span="11">
                 <el-card shadow="never">
@@ -10,10 +12,12 @@
                         <el-radio :label="'ming'">ICD名称</el-radio>
                         <el-radio :label="'bian'">ICD编码</el-radio>
                     </el-radio-group>
-                    <el-input v-model="search" style="width:100%;margin-top:15px;" size="mini"></el-input>
-                    <el-button @click="infoSelect()" size="small">模糊查询</el-button>
+                    <div class="searchInput">
+                        <el-input v-model="search" style="width:100%;padding-right: 9px;" size="mini" @keydown.enter.native="infoSelect"></el-input>
+                        <el-button @click="infoSelect()" size="small">模糊查询</el-button>
+                    </div>
                 </el-card>
-                <el-table ref="monthlyPlanTable" :data="tableData" border style="width: 100%;margin-top:10px;height:38vh;overflow-y:auto;" size="mini" highlight-current-row  @row-click="handleLeftRowClick">
+                <el-table ref="monthlyPlanTable" :data="tableData" border height="calc(100vh - 500px)" style="width: 100%;min-height: 480px;margin-top:10px;overflow-y:auto;" size="mini" highlight-current-row @row-click="handleLeftRowClick">
                     <el-table-column prop="ICD10" label="ICD编码"></el-table-column>
                     <el-table-column prop="ICD10Name" label="ICD名称"></el-table-column>
                     <el-table-column prop="ICD10HeadPY" label="ICD拼音码"></el-table-column>
@@ -36,14 +40,14 @@
             <el-col :span="11">
                 <el-tabs v-model="activeName" type="card">
                     <el-tab-pane label="科室" name="first">
-                        <el-table ref="departmentTable" :data="depatmentData" border class="table-box" size="mini" @row-click="handleDepartmentRowClick" highlight-current-row>
+                        <el-table ref="departmentTable" :data="depatmentData" border height="calc(100vh - 470px)" class="table-box" size="mini" @row-click="handleDepartmentRowClick" highlight-current-row>
                             <el-table-column prop="ICD10" label="ICD编码"></el-table-column>
                             <el-table-column prop="ICD10Name" label="ICD名称"></el-table-column>
                             <el-table-column prop="ICD10HeadPY" label="ICD拼音码"></el-table-column>
                         </el-table>
                     </el-tab-pane>
                     <el-tab-pane label="个人" name="second">
-                        <el-table ref="personTable" :data="personData" border class="table-box" size="mini" @row-click="handlePersonRowClick" highlight-current-row>
+                        <el-table ref="personTable" :data="personData" border height="calc(100vh - 470px)" class="table-box" size="mini" @row-click="handlePersonRowClick" highlight-current-row>
                             <el-table-column prop="ICD10" label="ICD编码"></el-table-column>
                             <el-table-column prop="ICD10Name" label="ICD名称"></el-table-column>
                             <el-table-column prop="ICD10HeadPY" label="ICD拼音码"></el-table-column>
@@ -184,7 +188,7 @@
             // 左边数据获取
             get_information() {
                 let params = {
-                    rbCode: this.radioMa ,
+                    rbCode: this.radioMa,
                     rbName: this.radioName,
                     rbPinyinCode: this.radioNumber,
                     txtInput: this.search
@@ -195,7 +199,8 @@
             },
             handleSave() {
                 const saveParams = []
-                let obj1 = null, obj = null
+                let obj1 = null,
+                    obj = null
                 if (this.depatmentData.length !== 0) {
                     this.depatmentData.forEach((item, index) => {
                         obj1 = {
@@ -212,7 +217,7 @@
                         IDC_ID: '',
                         IDC_NAME: '',
                         SIGN: 0,
-                    }   
+                    }
                     saveParams.push(obj1)
                 }
                 if (this.personData.length !== 0) {
@@ -236,7 +241,7 @@
                 }
                 console.log('saveParams', saveParams)
                 this.SAVE_SECONDBTN(saveParams).then((res) => {
-                    if(res.code == 1) {
+                    if (res.code == 1) {
                         this.$message.success(res.msg)
                         this.get_SyInformation(0)
                         this.get_SyInformation(1)
@@ -251,21 +256,21 @@
                     return
                 }
                 if (this.activeName === 'first') { // 科室
-                    const existNode = this.depatmentData.filter((item) => item.ICD10HeadPY === this.leftChoosedRow.ICD10HeadPY)
-                    if (existNode.length > 0) {
-                        this.$message.error('请勿重复选择')
-                        return
-                    }
+                    const existNode = this.depatmentData.filter((item) => item.ICD10HeadPY === this.leftChoosedRow.ICD10HeadPY)
+                    if (existNode.length > 0) {
+                        this.$message.error('请勿重复选择')
+                        return
+                    }
                     this.depatmentData.push({
                         dateStamp: new Date().getTime(),
                         ...this.leftChoosedRow
                     })
                 } else if (this.activeName === 'second') { // 个人
-                    const existNode = this.personData.filter((item) => item.ICD10HeadPY === this.leftChoosedRow.ICD10HeadPY)
-                    if (existNode.length > 0) {
-                        this.$message.error('请勿重复选择')
-                        return
-                    }
+                    const existNode = this.personData.filter((item) => item.ICD10HeadPY === this.leftChoosedRow.ICD10HeadPY)
+                    if (existNode.length > 0) {
+                        this.$message.error('请勿重复选择')
+                        return
+                    }
                     this.personData.push({
                         dateStamp: new Date().getTime(),
                         ...this.leftChoosedRow
@@ -331,6 +336,43 @@
 </script>
 
 <style lang="scss" scoped>
+    .operation-code-container {
+        min-height: 560px;
+    }
+
+    /deep/.el-card__body {
+        padding: 6px;
+    }
+
+    .searchInput {
+        display: inline-flex;
+        justify-content: space-evenly;
+        margin: 12px 0 0 0;
+    }
+
+    .imgBtnBox {
+        margin-bottom: 3px;
+        margin-top: -15px;
+
+        .imgBtn-item {
+            display: inline-flex;
+            justify-content: space-evenly;
+            line-height: 2.7;
+        }
+    }
+
+    /deep/.img-btn>span {
+        min-width: 34px !important;
+
+        &:nth-child(1) {
+            margin-right: 3px;
+        }
+
+        &:nth-child(2) {
+            margin-right: 10px;
+        }
+    }
+
     // table当前行颜色
     /deep/ .el-table__body tr.current-row>td {
         background-color: #44B3C7;
@@ -346,9 +388,10 @@
 
     .table-box {
         width: 100%;
-        height: 45.3vh;
+        height: calc(100vh - 470px);
         border: 1px solid #ebeef5;
         overflow-y: auto;
+        min-height: 510px;
     }
 
     .radiobox {

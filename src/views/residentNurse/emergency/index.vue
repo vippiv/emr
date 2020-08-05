@@ -1,6 +1,6 @@
 <template>
     <div class="emergency-container">
-        <topImgBtn @actionSubEvent="handleSubEvent"></topImgBtn>
+        <topImgBtn :btnshow='true' @actionSubEvent="handleSubEvent"></topImgBtn>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="本科在院患者列表" name="first">
                 <patientList :personDatas="bkpersonData" @_handleSizeChange='handleSizeChange' @_handleCurrentChange='handleCurrentChange' :paginationInfo='paginationInfo' :patientTotal="patientTotal" :nurseThree="nurseThree" :nurseTwo="nurseTwo" :nurseOne="nurseOne"></patientList>

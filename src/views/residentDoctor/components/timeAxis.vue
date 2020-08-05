@@ -1,7 +1,9 @@
 <!-- 时间轴 -->
 <template>
     <div class="timeAxis-container">
-        <ckImgBtn icon="ck-imgicon-search" @click="handleClicFn">查询</ckImgBtn>
+        <div class="imgBtnBox">
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-search" @click="handleClicFn">查询</ckImgBtn>
+        </div>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="显示起始日期:">
                 <el-date-picker type="date" v-model="formInline.date1" size="mini"></el-date-picker>
@@ -34,5 +36,28 @@
 <style lang="scss" scoped>
     .demo-form-inline {
         margin: 10px 0;
+    }
+
+    .imgBtnBox {
+        margin-bottom: -9px;
+        margin-top: -15px;
+
+        .imgBtn-item {
+            display: inline-flex;
+            justify-content: space-evenly;
+            line-height: 2.7;
+        }
+    }
+
+    /deep/.img-btn>span {
+        min-width: 34px !important;
+
+        &:nth-child(1) {
+            margin-right: 3px;
+        }
+
+        &:nth-child(2) {
+            margin-right: 10px;
+        }
     }
 </style>

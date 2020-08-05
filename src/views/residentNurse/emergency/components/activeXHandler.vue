@@ -32,7 +32,7 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
-            <div class="handler-item" @click="handleSaveAsPersonal">
+            <div class="handler-item" @click="handleSaveAsPersonal" v-if="false">
                 <img :src="imgBtnSet.saveTplBtn" class="img-btn">
                 <el-dropdown>
                     <el-button type="text">存入个人模板</el-button>
@@ -51,7 +51,7 @@
             <div class="handler-item">
                 <img :src="imgBtnSet.writeBtn" class="img-btn">
                 <el-dropdown @visible-change="handleVisibleChange" @command="handleInsertCommand">
-                    <el-button type="text">书写模式<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+                    <el-button type="text">浏览模式<i class="el-icon-arrow-down el-icon--right"></i></el-button>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="writeMode">书写模式</el-dropdown-item>
                         <el-dropdown-item command="unCleaningMode">非清洁浏览</el-dropdown-item>
@@ -71,6 +71,9 @@
         <insertVectorGraph :insertVectorGraphDiaVis="insertVectorGraphDiaVis" @actionInsertVectorGraph="actionInsertVectorGraph"></insertVectorGraph>
         <saveToPersonal :saveToPersonalDiaVis="saveToPersonalDiaVis" v-if="saveToPersonalDiaVis"></saveToPersonal>
         <!-- <div v-text="ret" style="word-break: break-all;"></div> -->
+        <!-- 打印参数 -->
+        <nursePintDailog :show="isprintshow" v-if="isprintshow" @closeprindailog='handlecloseprint' @handleprinting='handleprinting'></nursePintDailog>
+
     </div>
 </template>
 
@@ -98,6 +101,7 @@
     import saveToPersonal from './components/saveToPersonal'
     import handleActiveX from '@/utils/activeX'
     import Evtbus from '@/utils/bus'
+    import nursePintDailog from './components/nursePintDailog'
 
     const {
         mapActions
@@ -105,8 +109,15 @@
 
     export default {
         name: 'ActiveXHandler',
+        props: {
+            nursingfilecode: {
+                type: String,
+                default: ''
+            }
+        },
         data() {
             return {
+                isprintshow: false,
                 imgBtnSet: {
                     saveBtn,
                     insertBtn,
@@ -139,13 +150,15 @@
                 docHandlerBtn: true,
                 writingMode: 'writing',
                 toggleBGC: '开启元素颜色',
-                ret: ''
+                ret: '',
+                printObj: {}
             }
         },
         components: {
             insertLeaderSignDia,
             insertVectorGraph,
-            saveToPersonal
+            saveToPersonal,
+            nursePintDailog
         },
         computed: {
             ...mapState({
@@ -184,8 +197,18 @@
                 'GET_PATIENT_INFO',
                 'MEDISINE_RECORD_SYNC',
                 'SAVE_AUTHRITY_CHECK',
-                'UPDATE_MEDISINE_OPERATION_ITEM'
+                'UPDATE_MEDISINE_OPERATION_ITEM',
+                'GetFileIndexCount'
             ]),
+            handlecloseprint(val) {
+                this.isprintshow = false
+                this.printObj = val
+                this.handleIframeMask(false)
+            },
+            handleprinting() { //按行打印
+                this.handleIframeMask(false)
+                handleActiveX.printDocByLine(true, this.printObj.printnumber, this.printObj.printnumber, this.printObj.startpagenumber, this.printObj.startlinenumber, this.printObj.endpagenumber, this.printObj.endlinenumber)
+            },
             initActiveXObject() {
                 handleActiveX.init(document.getElementById('oframe' + Evtbus.objectId))
             },
@@ -257,11 +280,54 @@
                         document.all.oframe.InsertTable("Table", 3, 2)
                         break
                     case 'print':
-                        handleActiveX.printDoc()
+                        if (this.getDocSaveStatus()) { //未保存
+                            this.$message.warning('只有已保存的病历才可以打印!')
+                            return;
+                        }
+                        let data = {
+                            fileCode: this.nursingfilecode
+                        }
+                        this.GetFileIndexCount(data).then(res => {
+                            if (res.code == 1) {
+                                handleActiveX.printDoc()
+                            } else {
+                                this.$message.warning(res.msg)
+                            }
+                        })
                         break
-                    case 'continuePrint':
-                        // TODO 这里的参数需要配置
-                        handleActiveX.printDocByLine(true, true, 1, 1, 1, 1, 1)
+                    case 'linePrint': //按行打印
+                        if (this.getDocSaveStatus()) { //未保存
+                            this.$message.warning('只有已保存的病历才可以打印!')
+                            return;
+                        }
+                        let dataline = {
+                            fileCode: this.nursingfilecode
+                        }
+                        this.GetFileIndexCount(dataline).then(res => {
+                            if (res.code == 1) {
+                                this.isprintshow = true
+                                this.handleIframeMask(true)
+                            } else {
+                                this.$message.warning(res.msg)
+                            }
+                        })
+                        break
+                    case 'choosePrint': //选择续打
+                        if (this.getDocSaveStatus()) { //未保存
+                            this.$message.warning('只有已保存的病历才可以打印!')
+                            return;
+                        }
+                        let datachoose = {
+                            fileCode: this.nursingfilecode
+                        }
+                        this.GetFileIndexCount(datachoose).then(res => {
+                            if (res.code == 1) {
+                                handleActiveX.previewDocBySelect2(true)
+
+                            } else {
+                                this.$message.warning(res.msg)
+                            }
+                        })
                         break
                     case 'printPreview':
                         handleActiveX.printPreview()
@@ -289,6 +355,9 @@
                     default:
                         break
                 }
+            },
+            getDocSaveStatus() { //判断文档是否保存
+                return handleActiveX.tools.docHasChanged()
             },
             handleSaveAsPersonal() {
                 if (this.nursTempData.label == undefined) {
@@ -677,7 +746,7 @@
                 })
             }
         },
-        beforeDestroy(){
+        beforeDestroy() {
             Evtbus.$off('initActiveXObject')
             Evtbus.$off('showIframe')
             Evtbus.$off('showDocHandleBtn')

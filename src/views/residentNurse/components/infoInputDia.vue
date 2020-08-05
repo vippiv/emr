@@ -1,11 +1,11 @@
 <template>
     <div class="infoInputDia-container">
-        <div class="top-btn">
-            <ckImgBtn icon="ck-imgicon-search" @click="handle('query')" style="padding-left:0px;">查询</ckImgBtn>
-            <ckImgBtn icon="ck-imgicon-search" @click="handle('all')">全部</ckImgBtn>
+        <div class="top-btn imgBtnBox">
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-search" @click="handle('query')" style="padding-left:0px;">查询</ckImgBtn>
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-search" @click="handle('all')">全部</ckImgBtn>
             <!-- <ckBtn icon="ck-icon-edit">修正时间</ckBtn> -->
-            <ckImgBtn icon="ck-imgicon-save" @click="handle('save')">保存</ckImgBtn>
-            <ckImgBtn icon="ck-imgicon-printView" @click="handle('print')">打印</ckImgBtn>
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-save" @click="handle('save')">保存</ckImgBtn>
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-printView" @click="handle('print')">打印</ckImgBtn>
             <!-- <ckBtn icon="ck-icon-quit">退出</ckBtn> -->
         </div>
         <el-form ref="form" :model="form" label-width="0px" size="mini">
@@ -466,6 +466,29 @@
                 .el-input {
                     width: 100px;
                 }
+            }
+        }
+
+        .imgBtnBox {
+            margin-bottom: 10px;
+
+            .imgBtn-item {
+                display: inline-flex;
+                justify-content: space-evenly;
+                line-height: 2.3;
+            }
+        }
+
+        /deep/.img-btn>span {
+            min-width: 34px !important;
+
+            &:nth-child(1) {
+                min-width: 34px !important;
+                margin-right: 8px;
+            }
+
+            &:nth-child(2) {
+                margin-right: 10px;
             }
         }
     }

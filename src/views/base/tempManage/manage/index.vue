@@ -26,7 +26,7 @@
                                 <el-link type="primary" :underline="false">修改</el-link>
                             </li>
                             <li v-show="linkVisible" tabindex="-1" class="menu__item" @click="() =>handleCreateNew(nodeData)">
-                                <img class="icon" :src="newIcon">
+                                <img class="icon" :src="deleteIcon">
                                 <el-link type="primary" :underline="false">删除</el-link>
                             </li>
                         </ul>
@@ -113,9 +113,12 @@
                     <el-input size="mini" v-model="form.mname"></el-input>
                 </el-form-item>
                 <el-form-item label="所属业务域">
-                    <el-select v-model="value" size="mini" style="width:100%">
+                    <el-select v-model="value" size="mini" style="width:100%" @change="selectChange()">
                         <el-option v-for="item in options" :key="item.LIST_CODE" :label="item.LIST_NAME" :value="item.LIST_CODE"></el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="存储表" prop="sheet" v-if="isbook">
+                    <el-input size="mini" v-model="form.sheet"></el-input>
                 </el-form-item>
                 <div class="tempManage" style="text-align:center">
                     <p>模板类别</p>
@@ -235,7 +238,7 @@
     import subTplManageWordEdit from './subTplManageWordEdit'
     import insertIcon from '@/assets/images/icon/insert.png'
     import createIcon from '@/assets/images/icon/create.png'
-    import newIcon from '@/assets/images/icon/new.png'
+    import deleteIcon from '@/assets/images/icon/delete.png'
 
     export default {
         name: 'tempManageManage',
@@ -246,7 +249,7 @@
             return {
                 insertIcon,
                 createIcon,
-                newIcon,
+                deleteIcon,
                 currentTableData: null,
                 wordcode: '',
                 wordshow: false, //控制word编辑组件显示/隐藏
@@ -295,7 +298,9 @@
                 kstions: [],
                 dialogAddVisible: false,
                 value: '',
+                isbook: false,
                 form: {
+                    sheet: '',
                     mname: '',
                     checkedSingle: false,
                     checked: false,
@@ -730,6 +735,17 @@
                     })
                 }
             },
+            // 业务域值变化事件
+            selectChange() {
+                if (this.value == '0705') {
+                    this.isbook = true
+                } else {
+                    this.isbook = false
+                    if(this.fenlei == '0') {
+                        this.form.sheet = ''
+                    }
+                }
+            },
 
             // 修改弹窗
             handleEdit(obj) {
@@ -753,6 +769,14 @@
                             code: obj.MR_CODE
                         }
                         this.GET_ITEMINDEXBYMRCODE(params).then(res => {
+                            this.$nextTick(function() {
+                                if (this.value == '0705') {
+                                    this.isbook = true
+                                } else {
+                                    this.isbook = false
+                                }
+                            })
+                            this.form.sheet = res.values[0].SaveSheet
                             this.form.mname = res.values[0].MR_NAME
                             this.value = res.values[0].LIST_CODE
                             this.form.radioTpl = res.values[0].SEX_FITER
@@ -838,6 +862,7 @@
             },
             // 关新增弹窗
             closeAdd() {
+                this.isbook = false
                 this.value = ''
                 this.$refs.form.resetFields()
                 this.dialogAddVisible = false
@@ -875,7 +900,11 @@
                             this.xiuCode == this.xiuCode
                             this.xiuDate == this.xiuDate
                         }
+                        if( this.isbook == false) {
+                            this.form.sheet = ''
+                        }
                         let params = {
+                            SaveSheet: this.form.sheet.trim(),
                             LIST_CODE: this.value,
                             MR_CODE: this.xiuCode,
                             MR_NAME: this.form.mname.trim(),
@@ -911,10 +940,8 @@
                             this.get_GetInformation()
                             this.handleClose()
                         })
-
                     }
                 })
-
             },
             // 取消审核
             handleCancelClicFn() {
@@ -1167,6 +1194,7 @@
                 this.get_GetInformation()
             },
             handleClose() {
+                this.isbook = false
                 this.form.mname = ''
                 this.value = ''
                 this.$refs.form.resetFields()
@@ -1322,7 +1350,8 @@
         // // margin-bottom: 15px;
         color: #333;
         padding: 10px 0 4px 7px;
-        .imgBtn-item{
+
+        .imgBtn-item {
             display: inline-flex;
             justify-content: space-evenly;
             line-height: 2.7;

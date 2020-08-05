@@ -80,6 +80,10 @@ const handleActiveX = {
 	insertTable(obj) {
 		this.obj.InsertTable("Table", 3, 2)
 	},
+	//获取单元格内容
+	getCellContent(tname,cname) {
+		this.obj.GetCellContent(tname,cname)
+	},
 	// 关闭当前文档
 	closeDoc(obj) {
 		this.obj.Close()
@@ -293,35 +297,35 @@ const handleActiveX = {
 	 * 将光标选中区域设置为保护区域
 	 * @return {[type]} [description]
 	 */
-	insertProtectArea (name) {
+	insertProtectArea(name) {
 		return this.obj.InsertProtectArea(name)
 	},
 	/**
 	 * 获取当前光标处ProtectArea名称
 	 * @return {[type]} [description]
 	 */
-	getCurrentProtectAreaName () {
+	getCurrentProtectAreaName() {
 		return this.obj.GetCurrentProtectAreaName()
 	},
 	/**
 	 * 获取 ProtectArea区域文本
 	 * @return {[type]} [description]
 	 */
-	getProtectAreaText (name) {
+	getProtectAreaText(name) {
 		return this.obj.GetProtectAreaText(name)
 	},
 	/**
 	 * 删除一个ProtectArea
 	 * @return {[type]} [description]
 	 */
-	deleteProtectArea (name) {
+	deleteProtectArea(name) {
 		this.obj.DeleteProtectArea(name)
 	},
 	/**
 	 * 在光标当前位置插入文本内容
 	 * @return {[type]} [description]
 	 */
-	insertTextAtCurrentCursor (text) {
+	insertTextAtCurrentCursor(text) {
 		this.obj.InsertTextAtCurrentCursor(text)
 	},
 	/**
@@ -970,7 +974,7 @@ const handleActiveX = {
 		 * 点击新建/插入逻辑
 		 * @return {[type]} [description]
 		 */
-		insertContentIntoDoc (baseObj, tag, dateChoose, content, cursorRegion, patientInfo) {
+		insertContentIntoDoc(baseObj, tag, dateChoose, content, cursorRegion, patientInfo) {
 			// 获取当前文档的区域数量
 			const regionNames = this.rawObj.GetAllRegionNamesByCurrentDoc()
 			const listRegion = []

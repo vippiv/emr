@@ -30,6 +30,15 @@ const residentDoctor = {
         }
     },
     actions: {
+        async GETVISIT({ commit, dispatch }, payload) { // 获取患者信息
+            try {
+                const url = `${api.residentDoctor.getVisit}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
         async DOCTORCHILDGETDELETESYS({ commit, dispatch }, payload) { // 住院医生工作站子模板管理删除权限获取
             try {
                 const url = `${api.residentDoctor.doctorChildGetDeleteSys}${convertPostToGet(payload)}`

@@ -1,9 +1,11 @@
 <!-- 图库管理 -->
 <template>
     <div class="sub-images-manage-container">
-        <ckImgBtn icon="ck-imgicon-save" @click="handlesave">保存</ckImgBtn>
-        <ckImgBtn icon="ck-imgicon-print" @click="handleprint">打印</ckImgBtn>
-        <ckImgBtn icon="ck-imgicon-printView" @click="handlebrowser">浏览</ckImgBtn>
+        <div class="imgBtnBox">
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-save" @click="handlesave">保存</ckImgBtn>
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-print" @click="handleprint">打印</ckImgBtn>
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-printView" @click="handlebrowser">浏览</ckImgBtn>
+        </div>
         <el-row :gutter="20" style="margin-top:15px;">
             <el-col :span="11">
                 <span>矢量图名称列表:</span>
@@ -94,6 +96,28 @@
 </script>
 
 <style lang="scss" scoped>
+    .imgBtnBox {
+        // margin-bottom: 15px;
+
+        .imgBtn-item {
+            display: inline-flex;
+            justify-content: space-evenly;
+            line-height: 2.7;
+        }
+    }
+
+    /deep/.img-btn>span {
+        min-width: 34px !important;
+
+        &:nth-child(1) {
+            margin-right: 8px;
+        }
+
+        &:nth-child(2) {
+            margin-right: 10px;
+        }
+    }
+
     .ul {
         border: 1px solid #e6e6e6;
         height: 45vh;

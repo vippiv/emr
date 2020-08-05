@@ -1,7 +1,9 @@
 <!-- 确诊诊断 -->
 <template>
     <div class="definiteDiagnosis-container">
-        <ckBtn icon="ck-icon-choose" @click="handleClicFn">确定</ckBtn>
+        <div class="imgBtnBox">
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-import" @click="handleClicFn">确定</ckImgBtn>
+        </div>
         <el-row class="gen">
             <el-col :span="11" :offset="6">
                 确定诊断:
@@ -73,5 +75,28 @@
     /deep/textarea {
         border: none;
         resize: none;
+    }
+
+    .imgBtnBox {
+        margin-bottom: -6px;
+        margin-top: -13px;
+
+        .imgBtn-item {
+            display: inline-flex;
+            justify-content: space-evenly;
+            line-height: 2.7;
+        }
+    }
+
+    /deep/.img-btn>span {
+        min-width: 34px !important;
+
+        &:nth-child(1) {
+            margin-right: 3px;
+        }
+
+        &:nth-child(2) {
+            margin-right: 10px;
+        }
     }
 </style>

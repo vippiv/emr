@@ -1,8 +1,8 @@
 <template>
     <div class="top-img-btn">
         <div class="action-box imgBtnBox">
-            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-reflesh" @click="handleShowPatient('reflash')">刷新</ckImgBtn>
-            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-position" @click="handleShowPatient('position')">定位【F1】</ckImgBtn>
+            <ckImgBtn v-if="btnshow" class="imgBtn-item" icon="ck-imgicon-reflesh" @click="handleShowPatient('reflash')">刷新</ckImgBtn>
+            <ckImgBtn v-if="btnshow" class="imgBtn-item" icon="ck-imgicon-position" @click="handleShowPatient('position')">定位【F1】</ckImgBtn>
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-infoInput" @click="handleShowPatient('infoInput')">三测表信息批量录入</ckImgBtn>
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-nursingpatrol" @click="handleShowPatient('nursingpatrol')">护理巡视</ckImgBtn>
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-nursingpatrol" @click="handleShowPatient('nursingpatrol2')">护理巡视2</ckImgBtn>
@@ -14,6 +14,12 @@
 <script>
     export default {
         name: 'topImgBtn',
+        props:{
+            btnshow:{
+                type:Boolean,
+                default:false
+            }
+        },
         data() {
             return {
                 dwshow: false

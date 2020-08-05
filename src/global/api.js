@@ -254,6 +254,7 @@ const api = {
     },
     /** ***************************住院医生工作站************************************************/
     residentDoctor: {
+        getVisit: `${platform_doctor}PaitentInfoList/GetVisit`, // 获取患者信息
         getPatientDocTpl: `${platform_doctor}PaitentInfoList/GetMouseDoubleClick`, // 查询患者信息加载模板地址
         paitentInfoList: `${platform_doctor}PaitentInfoList/GetPaitentInfoList`, // 查询所有患者
         doctorOperation: `${platform_doctor}DoctorOperation/GetUsersByGroup`, // 患者病历树
@@ -418,6 +419,7 @@ const api = {
         isGroupDiagnosis: `${platform_nurse}NurseFileSave/GetHzInfo`, // 判断是否属于会诊类别
         saveDocByString: `${platform_nurse}FileUpload/UploadFileInfoByString`, // 以字符串方式上传DOC文档
         saveDocData: `${platform_nurse}NurseFileSave/SaveFileInfo`, // 保存DOC文档中的数据(数据组，数据元，区域)
+        getFileIndexCount: `${platform_nurse}HospitalNurse/GetFileIndexCount`, // 获取是否打印标识
     },
     /** ***************************病历书写接口************************************************/
     writeMedisine: {

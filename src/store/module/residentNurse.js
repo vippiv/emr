@@ -422,6 +422,15 @@ const residentNurse = {
         }, payload) {
             commit('saveNurTemplateData', payload)
         },
+        async GetFileIndexCount({ commit, dispatch }, payload) { // 获取是否可以打印标识
+            try {
+                const url = `${api.residentNurse.getFileIndexCount}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
     }
 }
 export default residentNurse

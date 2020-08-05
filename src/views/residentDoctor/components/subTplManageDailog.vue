@@ -6,9 +6,12 @@
                     <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="所属业务域">
-                    <el-select v-model="form.region" placeholder="请选择活动区域" style="width:100%">
+                    <el-select v-model="form.region" placeholder="请选择活动区域" style="width:100%" @change="selectChange()">
                         <el-option v-for="item in options" :key="item.LIST_CODE" :label="item.LIST_NAME" :value="item.LIST_CODE"></el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="存储表" prop="sheet" v-if="isbook">
+                    <el-input size="mini" v-model="form.sheet"></el-input>
                 </el-form-item>
                 <el-form style="margin-top:-12px;margin-bottom:19px;">
                     <fieldset style="border:1px solid #dcdfe6;border-radius:5px;line-height:2.3;">
@@ -122,7 +125,9 @@
                 isdisableSelect: false,
                 kstions: [],
                 options: [],
+                isbook: false,
                 form: {
+                    sheet: '',
                     assion: '',
                     selected: '',
                     checkedSingle: false,
@@ -168,6 +173,17 @@
                 'GET_DOCTORDEPT',
                 'DOCTOR_INSERTTEMPLATESAVE'
             ]),
+            // 业务域值变化事件
+            selectChange() {
+                if (this.form.region == '0705') {
+                    this.isbook = true
+                } else {
+                    this.isbook = false
+                    if (this.dailogType == 1) {
+                        this.form.sheet = ''
+                    }
+                }
+            },
             // 获取科室
             getDept() {
                 if (this.tpck == 'MS') {
@@ -187,7 +203,9 @@
             getBusiness() {
                 this.GET_DOCTORBUSINESS().then((res) => {
                     this.options = res.values
-                    this.form.region = this.options[0].LIST_CODE
+                    if(this.dailogType == 1) {
+                        this.form.region = this.options[0].LIST_CODE
+                    }
                 })
             },
             // 信息获取
@@ -204,6 +222,14 @@
                     this.form.checkedArea = this.form.checkedArea
                     this.form.ceradio = this.form.ceradio
                 } else {
+                    this.$nextTick(function() {
+                        if (this.form.region == '0705') {
+                            this.isbook = true
+                        } else {
+                            this.isbook = false
+                        }
+                    })
+                    this.form.sheet = this.editRes.SaveSheet
                     this.form.name = this.editRes.MR_NAME
                     this.form.radio = this.editRes.SEX_FITER
                     this.form.textarea = this.editRes.CONTENT_CODE
@@ -220,7 +246,7 @@
             // 保存
             handleAdd(formName) {
                 this.$refs[formName].validate((valid) => {
-                    if(!valid){
+                    if (!valid) {
                         return
                     } else {
                         if (this.form.mkradio == 'MC') {
@@ -235,6 +261,7 @@
                         } else {
                             this.koko = this.form.mkradio
                         }
+                        // 新增为1
                         if (this.dailogType == 1) {
                             this.xiuCode = ''
                             this.xiuDate = moment(new Date()).format('YYYY-MM-DD HH:mm:ss')
@@ -242,7 +269,11 @@
                             this.xiuCode = this.xiuCode
                             this.xiuDate = this.xiuDate
                         }
+                        if (this.isbook == false) {
+                            this.form.sheet = ''
+                        }
                         let params = {
+                            SaveSheet: this.form.sheet.trim(),
                             LIST_CODE: this.form.region,
                             MR_CODE: this.xiuCode,
                             MR_NAME: this.form.name.trim(),
@@ -280,15 +311,17 @@
                 })
             },
             handleClose() {
+                this.isbook = false
                 this.$emit('closeSubManage')
             }
         }
     }
 </script>
 <style lang="scss" scoped>
-.subIplManage-dailog {
-    height: 655px;
-}
+    .subIplManage-dailog {
+        height: 655px;
+    }
+
     .mblb {
         display: flex;
         justify-content: space-around;
