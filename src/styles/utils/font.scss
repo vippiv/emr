@@ -1,0 +1,321 @@
+@font-face {
+    font-family: 'iconfont';
+    /* project id 1821146 */
+    src: url('//at.alicdn.com/t/font_1821146_q5riljr31s.eot');
+    src: url('//at.alicdn.com/t/font_1821146_q5riljr31s.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_1821146_q5riljr31s.woff2') format('woff2'),
+        url('//at.alicdn.com/t/font_1821146_q5riljr31s.woff') format('woff'),
+        url('//at.alicdn.com/t/font_1821146_q5riljr31s.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_1821146_q5riljr31s.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+// 刷新
+.ck-icon-reflesh::before {
+    content: "\e64d"
+}
+
+
+// 查找
+.ck-icon-search::before {
+    content: "\e626"
+}
+
+
+// 新增1
+.ck-icon-add::before {
+    content: "\e61e"
+}
+
+
+// 新增2
+.ck-icon-add2::before {
+    content: "\e62d"
+}
+
+
+// 复制
+.ck-icon-copy::before {
+    content: "\e60a"
+}
+
+
+// 移动
+.ck-icon-move::before {
+    content: "\e653"
+}
+
+
+// 解封
+.ck-icon-unlock::before {
+    content: "\e658"
+}
+
+
+// 审核
+.ck-icon-examine::before {
+    content: "\e602"
+}
+
+
+// 打印预览
+.ck-icon-print-preview::before {
+    content: "\e60c"
+}
+
+
+// 编辑
+.ck-icon-edit::before {
+    content: "\e60e"
+}
+
+
+// 编辑 - 笔形
+.ck-icon-edit-pen::before {
+    content: "\e8cf"
+}
+
+
+// 删除
+.ck-icon-del::before {
+    content: "\e614"
+}
+
+
+// 浏览
+.ck-icon-browse::before {
+    content: "\e64f"
+}
+
+
+// 保存
+.ck-icon-save::before {
+    content: "\e601"
+}
+
+
+// 上传
+.ck-icon-upload::before {
+    content: "\e628"
+}
+
+
+// 打印
+.ck-icon-print::before {
+    content: "\e6e7"
+}
+
+
+// 返回
+.ck-icon-back::before {
+    content: "\e722"
+}
+
+
+// 卡片模式
+.ck-icon-cardpattern::before {
+    content: "\e674"
+}
+
+
+// 选择
+.ck-icon-choose::before {
+    content: "\e67b"
+}
+
+
+// 排序
+.ck-icon-sort::before {
+    content: "\e65f"
+}
+
+
+// 导出
+.ck-icon-export::before {
+    content: "\e63d"
+}
+
+
+// 退出
+.ck-icon-quit::before {
+    content: "\e688"
+}
+
+
+// 文件夹
+.ck-icon-folder::before {
+    content: "\e6aa"
+}
+
+
+// 文件
+.ck-icon-file::before {
+    content: "\e960"
+}
+
+// 文件2
+.ck-icon-file2::before {
+    content: "\e793"
+}
+
+// 加号，展开
+.ck-icon-plus::before {
+    content: "\e600"
+}
+
+// 减号，收缩
+.ck-icon-minus::before {
+    content: "\e655"
+}
+
+
+.ck-imgicon {
+    background-size: 100% 100%;
+}
+
+// 住院医生搜索
+.ck-imgicon-search {
+    background: url('../assets/images/imgbtn/search.png') no-repeat;
+}
+
+// 住院医生打印浏览
+.ck-imgicon-printView {
+    background: url('../assets/images/imgbtn/printview.png') no-repeat;
+}
+
+// 住院医生打印
+.ck-imgicon-print {
+    background: url('../assets/images/imgbtn/print.png') no-repeat;
+}
+
+// 保存
+.ck-imgicon-save {
+    background: url('../assets/images/imgbtn/save.png') no-repeat;
+}
+
+// 数据组管理新建分类
+.ck-imgicon-insert {
+    background: url('../assets/images/imgbtn/insert.png') no-repeat;
+}
+
+// 数据元管理修改
+.ck-imgicon-modify {
+    background: url('../assets/images/imgbtn/modify.png') no-repeat;
+}
+
+// 基础模板管理复制模板
+.ck-imgicon-copy {
+    background: url('../assets/images/imgbtn/copy.png') no-repeat;
+}
+
+// 基础模板管理移动模板
+.ck-imgicon-remove {
+    background: url('../assets/images/imgbtn/remove.png') no-repeat;
+}
+
+// 基础模板管理取消审核模板
+.ck-imgicon-cancelAudit {
+    background: url('../assets/images/imgbtn/cancelAudit.png') no-repeat;
+}
+
+// 基础模板管理审核模板
+.ck-imgicon-audit {
+    background: url('../assets/images/imgbtn/audit.png') no-repeat;
+}
+
+// 基础模板管理编辑
+.ck-imgicon-write {
+    background: url('../assets/images/imgbtn/write.png') no-repeat;
+}
+
+// 基础模板管理删除
+.ck-imgicon-delete {
+    background: url('../assets/images/imgbtn/delete.png') no-repeat;
+}
+
+// 基础模板管理新增
+.ck-imgicon-add {
+    background: url('../assets/images/imgbtn/add.png') no-repeat;
+}
+
+// 基础模板管理排序
+.ck-imgicon-sort {
+    background: url('../assets/images/imgbtn/sort.png') no-repeat;
+}
+
+// 病历完成
+.ck-imgicon-finished {
+    background: url('../assets/images/imgbtn/1.png') no-repeat;
+}
+
+// 患者信息
+.ck-imgicon-patientinfo {
+    background: url('../assets/images/imgbtn/2.png') no-repeat;
+}
+
+// 评分测试
+.ck-imgicon-test {
+    background: url('../assets/images/imgbtn/3.png') no-repeat;
+}
+
+// 移交病历
+.ck-imgicon-transfer {
+    background: url('../assets/images/imgbtn/4.png') no-repeat;
+}
+
+// 三级检诊
+.ck-imgicon-threelevelcheck {
+    background: url('../assets/images/imgbtn/5.png') no-repeat;
+}
+
+// 科室交班记录
+.ck-imgicon-transferclass {
+    background: url('../assets/images/imgbtn/6.png') no-repeat;
+}
+
+// 双向转诊
+.ck-imgicon-twoways {
+    background: url('../assets/images/imgbtn/7.png') no-repeat;
+}
+
+// 临床报告
+.ck-imgicon-clinicalreport {
+    background: url('../assets/images/imgbtn/8.png') no-repeat;
+}
+
+// 定位
+.ck-imgicon-position {
+    background: url('../assets/images/imgbtn/9.png') no-repeat;
+}
+
+// 刷新
+.ck-imgicon-reflesh {
+    background: url('../assets/images/imgbtn/10.png') no-repeat;
+}
+
+// 三测表信息批量录入
+.ck-imgicon-infoInput {
+    background: url('../assets/images/imgbtn/11.png') no-repeat;
+}
+
+// 护理巡视
+.ck-imgicon-nursingpatrol {
+    background: url('../assets/images/imgbtn/12.png') no-repeat;
+}
+
+// 生命体征
+.ck-imgicon-lifesigns {
+    background: url('../assets/images/imgbtn/14.png') no-repeat;
+}
+
+// 会诊安排
+.ck-imgicon-consultationarrange {
+    background: url('../assets/images/imgbtn/15.png') no-repeat;
+}
