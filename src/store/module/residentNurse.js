@@ -431,6 +431,114 @@ const residentNurse = {
                 console.log(e)
             }
         },
+        async SaveNurseTemplate({ commit, dispatch }, payload) { // 保存
+            try {
+                const url = `${api.residentNurse.saveNurseTemplate}`
+                const res = await fetch.post(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_TEMPERATURE_BY_DAY({ commit, dispatch }, payload) { // 获取某天的体温单数据
+            try {
+                const url = `${api.residentNurse.getTemperatureByDay}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_MEASURE_TEMPERATURE_HISTORY({ commit, dispatch }, payload) { // 获取某天的体温测量记录
+            try {
+                const url = `${api.residentNurse.getMeasyreTemperatureHistory}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async DEL_MEASURE_DATA_BY_DAY({ commit, dispatch }, payload) { // 删除某一天的测量数据
+            try {
+                const url = `${api.residentNurse.delMeasureDateByDay}${convertPostToGet(payload)}`
+                const res = await fetch.post(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async DEL_MEASURE_DATA_BY_CELL({ commit, dispatch }, payload) { // 删除某一单元格的测量数据
+            try {
+                const url = `${api.residentNurse.delMeasureDateByCell}${convertPostToGet(payload)}`
+                const res = await fetch.post(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_NURSE_INFO({ commit, dispatch }, payload) { // 获取护理信息
+            try {
+                const url = `${api.residentNurse.getNurseInfo}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_SKIN_TEXT_ONE({ commit, dispatch }, payload) { // 获取皮试下拉列表一
+            try {
+                const url = `${api.residentNurse.getSkinTestOne}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_SKIN_TEXT_TWO({ commit, dispatch }, payload) { // 获取皮试下拉列表二
+            try {
+                const url = `${api.residentNurse.getSkinTestTwo}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_FAECE({ commit, dispatch }, payload) { // 大便选项
+            try {
+                const url = `${api.residentNurse.getFaece}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_TEMPERATURE_TIME_SET({ commit, dispatch }, payload) { // 体温单时间合集选项
+            try {
+                const url = `${api.residentNurse.temperatureTimeSet}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async SAVE_TEMPERTAURE_DATA({ commit, dispatch }, payload) { // 保存体温单增加的数据
+            try {
+                const url = `${api.residentNurse.saveTemeratureData}${convertPostToGet(payload)}`
+                const res = await fetch.post(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GetPageRowsInfo({ commit, dispatch }, payload) { // 获取分页数据
+            try {
+                const url = `${api.residentNurse.getPageRowsInfo}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
     }
 }
 export default residentNurse

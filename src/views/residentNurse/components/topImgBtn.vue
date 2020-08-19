@@ -8,6 +8,7 @@
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-nursingpatrol" @click="handleShowPatient('nursingpatrol2')">护理巡视2</ckImgBtn>
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-lifesigns" @click="handleShowPatient('lifesigns')">生命体征</ckImgBtn>
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-consultationarrange" @click="handleShowPatient('consultation')">会诊安排</ckImgBtn>
+             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-export" @click="handleShowPatient('returnback')">退出</ckImgBtn>
         </div>
     </div>
 </template>
@@ -40,7 +41,7 @@
         .imgBtn-item {
             display: inline-flex;
             justify-content: space-evenly;
-            line-height: 2.3;
+            line-height: 2.6;
         }
     }
 

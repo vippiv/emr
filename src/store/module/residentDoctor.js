@@ -1268,8 +1268,88 @@ const residentDoctor = {
             } catch (e) {
                 console.log(e)
             }
+        },
+        async MEDISINE_RECORD_HISTORY_LIST({ commit, dispatch }, payload) { //  患者病历历史
+            try {
+                const url = `${api.residentDoctor.medisineRecordHistoryList}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_TEXT_CHECK_REPORT({ commit, dispatch }, payload) { //  普通门诊检验报告
+            try {
+                const url = `${api.residentDoctor.textCheckReports}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_TEXT_CHECK_REPORT_DETAIL({ commit, dispatch }, payload) { //  普通门诊检验报告详情
+            try {
+                const url = `${api.residentDoctor.textCheckReportDetail}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_ANALYSIS_REPORTS({ commit, dispatch }, payload) { //  获取分析报告
+            try {
+                const url = `${api.residentDoctor.analysisReports}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_ANALYSIS_REPORT_DETAIL({ commit, dispatch }, payload) { //  获取分析报告详情
+            try {
+                const url = `${api.residentDoctor.analysisReportDetail}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async GET_ANALYSIS_ITEM_DETAIL({ commit, dispatch }, payload) { //  单项报告
+            try {
+                const url = `${api.residentDoctor.analysisItemDetail}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async OUTPATIENT_GET_ANALYSIS_REPORTS({ commit, dispatch }, payload) { //  获取分析报告
+            try {
+                const url = `${api.residentDoctor.outPatientAnalysisReports}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async OUTPATIENT_GET_ANALYSIS_REPORT_DETAIL({ commit, dispatch }, payload) { //  获取分析报告详情
+            try {
+                const url = `${api.residentDoctor.outPatientAnalysisReportDetail}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async OUTPATIENT_GET_ANALYSIS_ITEM_DETAIL({ commit, dispatch }, payload) { //  单项报告
+            try {
+                const url = `${api.residentDoctor.outPatientAnalysisItemDetail}${convertPostToGet(payload)}`
+                const res = await fetch.get(url, payload)
+                return res
+            } catch (e) {
+                console.log(e)
+            }
         }
-        
     }
 }
 

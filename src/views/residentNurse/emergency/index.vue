@@ -6,10 +6,10 @@
                 <patientList :personDatas="bkpersonData" @_handleSizeChange='handleSizeChange' @_handleCurrentChange='handleCurrentChange' :paginationInfo='paginationInfo' :patientTotal="patientTotal" :nurseThree="nurseThree" :nurseTwo="nurseTwo" :nurseOne="nurseOne"></patientList>
             </el-tab-pane>
             <el-tab-pane label="转科未提交患者列表" name="second">
-                <patientList :personDatas="zkpersonData" :paginationInfo='paginationInfo' :patientTotal="patientTotal" :nurseThree="nurseThree" :nurseTwo="nurseTwo" :nurseOne="nurseOne"></patientList>
+                <patientList  @_handleSizeChange='handleSizeChange' @_handleCurrentChange='handleCurrentChange' :personDatas="zkpersonData" :paginationInfo='paginationInfo' :patientTotal="patientTotal" :nurseThree="nurseThree" :nurseTwo="nurseTwo" :nurseOne="nurseOne"></patientList>
             </el-tab-pane>
             <el-tab-pane label="出院未送交病历患者列表" name="third">
-                <patientList :personDatas="cypersonData" :paginationInfo='paginationInfo' :patientTotal="patientTotal" :nurseThree="nurseThree" :nurseTwo="nurseTwo" :nurseOne="nurseOne"></patientList>
+                <patientList  @_handleSizeChange='handleSizeChange' @_handleCurrentChange='handleCurrentChange' :personDatas="cypersonData" :paginationInfo='paginationInfo' :patientTotal="patientTotal" :nurseThree="nurseThree" :nurseTwo="nurseTwo" :nurseOne="nurseOne"></patientList>
             </el-tab-pane>
         </el-tabs>
         <topMenuDia :title="topMenuDiaTitle" :dialogVisible="topMenuDiaVis" :diaWidth="customDiaWidth" @closeTopMeunDia="handleCloseTopMeunDia">
@@ -301,6 +301,12 @@
                     this.customDiaWidth = '95%'
                     this.topMenuComponentName = 'nursingPatrolSecode'
                     this.topMenuDiaVis = true
+                } else if (val == 'returnback') { //退出
+                    this.$router.push({
+                        path: '/nurse'
+                    }).catch(err => {
+                        console.log('输出报错', err)
+                    })
                 }
                 Evtbus.$emit('showIframe', true)
             },
@@ -310,9 +316,9 @@
                     //定位
                     this.dwshow = val.close
                     if (val.query == 1) {
-                        this.BenNo = val.cw
-                        this.Visit_NO = val.hospitalNo
-                        this.VName = val.name
+                        this.BenNo = encodeURI(val.cw)
+                        this.Visit_NO = encodeURI(val.hospitalNo)
+                        this.VName = encodeURI(val.name)
 
                         if (this.activeName == 'first') {
                             this.getSYSTVISIT1ByIpDept({

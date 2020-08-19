@@ -9,6 +9,7 @@ import ckYmd from './ckForm/ckYmd'
 import ckAddress from './ckForm/ckAddress'
 import ckThermometer from './ckThermometer'
 import ElTree from './ckTree'
+import ckEditableCell from './ckEditableCell'
 
 const loadComponents = {
   install (Vue) {
@@ -23,6 +24,7 @@ const loadComponents = {
     Vue.component('ckAddress', ckAddress)
     Vue.component('ckThermometer', ckThermometer)
     Vue.component('ElTrees', ElTree)
+    Vue.component('ckEditableCell', ckEditableCell)
   }
 }
 export default loadComponents

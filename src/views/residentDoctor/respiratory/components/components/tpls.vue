@@ -132,7 +132,6 @@
 				}, 200)
 			},
 			handleRightClick (evt, obj, Node, element) {
-				console.log(evt, obj, Node, element)
 				if (parseInt(obj.Tag, 10) === 1) { // 文件夹，不允许右键，单击，加载子节点
 					return
 				}
@@ -151,7 +150,6 @@
 				}
 			},
 			handleSimulateRightClick (evt, node) {
-				console.log('右击', evt, node)
 				evt.preventDefault()
 				this.handleRightClick(evt, node, {
 					data: node
@@ -212,8 +210,8 @@
 							}, 'insert', insertSymbol.insertDate)
 						} else {
 							// 给出弹窗
-							this.dateRange.dateMax = moment(insertSymbol.dateMax).format('YYYY-MM-DD HH:mm')
-							this.dateRange.dateMin = moment(insertSymbol.dateMin).format('YYYY-MM-DD HH:mm')
+							this.dateRange.dateMax = moment(insertSymbol.dateMax).format('YYYY/MM/DD HH:mm')
+							this.dateRange.dateMin = moment(insertSymbol.dateMin).format('YYYY/MM/DD HH:mm')
 							this.cursorRegion = insertSymbol.cursorRegion
 							this.dateChooseDiaVis = true
 							Evtbus.$emit('showIframe', this.dateChooseDiaVis)
@@ -298,7 +296,7 @@
 				if (ret === 'create') {
 					this.dateRange.dateMax = ''
 					this.dateRange.dateMin = ''
-					const dateMax = handleActiveX.tools.getDocDateRange()
+					const dateMax = handleActiveX.tools.getDocDateRange().replace(/-/g, '/')
 					this.dateRange.dateMax = dateMax
 					this.dateChooseDiaVis = val
 					Evtbus.$emit('showIframe', this.dateChooseDiaVis)
@@ -349,7 +347,11 @@
 				})
 			},
 			handleSimulateDblclick (node) {
-				this.handleModuleNodeClick(node)
+				// node.Tag === 1 代表目录，只能加载子模板
+				if (node.Tag === 1) {
+					return
+				}
+				this.hdlDblclick(node)
 			},
 			handleSearch () {
 				if (!this.formInline.kyw) {

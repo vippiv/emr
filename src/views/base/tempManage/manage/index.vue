@@ -58,9 +58,9 @@
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item>
-                            <el-button @click="infoSelect()" size="small">模糊查询</el-button>
-                            <el-button @click="handleClicFn()" size="small">模板排序</el-button>
-                            <el-button @click="toggleSelection(tableData)" size="small">全选</el-button>
+                            <el-button @click="infoSelect()" plain type="primary" size="small">模糊查询</el-button>
+                            <el-button @click="handleClicFn()" plain type="primary" size="small">模板排序</el-button>
+                            <el-button @click="toggleSelection(tableData)" plain type="primary" size="small">全选</el-button>
                         </el-form-item>
                     </el-form>
                 </el-header>
@@ -288,6 +288,8 @@
                 tplName: '', // 模板名称
                 checkedTempTree: [],
                 // 分页
+                hasName: '',
+                hasInfo: false,
                 pageSize: 20,
                 pageNos: 1,
                 total: 0,
@@ -402,9 +404,10 @@
             },
             // 模板切换
             checkChange() {
-                if (this.currentTreeNode) {
-                    this.handleNodeClick(this.currentTreeNode)
-                    this.currentTreeNode = this.currentTreeNode
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
                 }
             },
 
@@ -670,6 +673,7 @@
                         this.total = 0
                         this.tableData = []
                     }
+                    this.hasInfo = false
                 })
             },
             // 左边树获取
@@ -741,7 +745,7 @@
                     this.isbook = true
                 } else {
                     this.isbook = false
-                    if(this.fenlei == '0') {
+                    if (this.fenlei == '0') {
                         this.form.sheet = ''
                     }
                 }
@@ -900,7 +904,7 @@
                             this.xiuCode == this.xiuCode
                             this.xiuDate == this.xiuDate
                         }
-                        if( this.isbook == false) {
+                        if (this.isbook == false) {
                             this.form.sheet = ''
                         }
                         let params = {
@@ -1187,11 +1191,19 @@
 
             pageSizeChange(size) {
                 this.pageSize = size
-                this.get_GetInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
+                }
             },
             currentPageChange(val) {
                 this.pageNos = val
-                this.get_GetInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
+                }
             },
             handleClose() {
                 this.isbook = false
@@ -1203,7 +1215,10 @@
             // 模板查询
             infoSelect() {
                 if (!this.tplName) {
-                    this.$message.error('请输入模板名称或者模板拼音码或者模板五笔码')
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入模板名称或者模板拼音码或者模板五笔码!'
+                    })
                     return
                 }
                 const params = {
@@ -1214,7 +1229,26 @@
                     pageSize: this.pageSize,
                     pageNos: this.pageNos
                 }
+                // 存查询的名称
+                this.hasName = params.plateName
                 this.GET_FAINFOLISTBYSELECT(params).then(res => {
+                    this.hasInfo = true
+                    this.total = res.values.total
+                    this.tableData = res.values.values
+                })
+            },
+            // 分页查询
+            hasInfoSelect() {
+                const params = {
+                    plateName: this.hasName,
+                    cbWoman: this.tplTypeChecked.indexOf('woman') > -1 ? '1' : '0',
+                    cbMan: this.tplTypeChecked.indexOf('man') > -1 ? '1' : '0',
+                    cbTY: this.tplTypeChecked.indexOf('ty') > -1 ? '1' : '0',
+                    pageSize: this.pageSize,
+                    pageNos: this.pageNos
+                }
+                this.GET_FAINFOLISTBYSELECT(params).then(res => {
+                    this.hasInfo = true
                     this.total = res.values.total
                     this.tableData = res.values.values
                 })
@@ -1236,7 +1270,7 @@
                     userID: this.loginUserId.UserId, //登录人ID
                     itemFlag: row.ITEM_FLAG
                 }
-                console.log(JSON.stringify(data))
+                // console.log(JSON.stringify(data))
                 this.TemplateDoubleClick(data).then(res => {
                     console.log(res)
                     this.wordcode = res.code
@@ -1256,7 +1290,7 @@
                     }
 
                 })
-            },
+            }
         }
     }
 </script>

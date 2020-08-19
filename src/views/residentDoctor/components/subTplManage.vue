@@ -6,7 +6,7 @@
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-delete" @click="handleDele">删除模板</ckImgBtn>
             <!-- <ckImgBtn icon="ck-imgicon-write" @click="handleClickEidt">编辑模板</ckImgBtn> -->
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-audit" @click="handleCheckClicFn" :disabled="isdisabledFn">审核模板</ckImgBtn>
-            <ckImgBtn class="imgBtn-item"  icon="ck-imgicon-cancelAudit" @click="handleCancelClicFn">取消审核</ckImgBtn>
+            <ckImgBtn class="imgBtn-item" icon="ck-imgicon-cancelAudit" @click="handleCancelClicFn">取消审核</ckImgBtn>
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-remove" @click="handleCopyClicFn" v-if="isUse">移动模板</ckImgBtn>
             <ckImgBtn class="imgBtn-item" icon="ck-imgicon-copy" @click="handleClickCopy">复制模板</ckImgBtn>
         </div>
@@ -287,6 +287,8 @@
                     tempname: ''
                 },
                 // 分页
+                hasName: '',
+                hasInfo: false,
                 paginationInfo: {
                     currentPage: 1,
                     total: 0,
@@ -449,9 +451,10 @@
             },
             // 模板切换
             checkChange() {
-                if (this.currentTreeNode) {
-                    this.get_GetInformation(this.currentTreeNode)
-                    this.currentTreeNode = this.currentTreeNode
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
                 }
             },
             // 右边列表获取
@@ -474,6 +477,7 @@
                         this.paginationInfo.total = 0
                         this.tableData = []
                     }
+                    this.hasInfo = false
                 })
             },
             // 左边树获取
@@ -631,7 +635,26 @@
                     pageSize: this.paginationInfo.pageSize,
                     pageNos: this.paginationInfo.currentPage
                 }
+                // 存查询的名称
+                this.hasName = params.plateName
                 this.DOCTOR_GETINFOLISTBYSELECT(params).then((res) => {
+                    this.hasInfo = true
+                    this.paginationInfo.total = res.values.total
+                    this.tableData = res.values.values
+                })
+            },
+            hasInfoSelect() {
+                // 分页查询
+                const params = {
+                    plateName: this.hasName,
+                    cbWoman: this.form.checkList.indexOf('woman') > -1 ? '1' : '0',
+                    cbMan: this.form.checkList.indexOf('man') > -1 ? '1' : '0',
+                    cbTY: this.form.checkList.indexOf('ty') > -1 ? '1' : '0',
+                    pageSize: this.paginationInfo.pageSize,
+                    pageNos: this.paginationInfo.currentPage
+                }
+                this.DOCTOR_GETINFOLISTBYSELECT(params).then((res) => {
+                    this.hasInfo = true
                     this.paginationInfo.total = res.values.total
                     this.tableData = res.values.values
                 })
@@ -883,11 +906,19 @@
             },
             handleSizeChange(val) {
                 this.paginationInfo.pageSize = val
-                this.get_GetInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
+                }
             },
             handleCurrentChange(val) {
                 this.paginationInfo.currentPage = val
-                this.get_GetInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
+                }
             },
         }
     }
@@ -928,21 +959,31 @@
 
     .imgBtnBox {
         margin-bottom: 15px;
-        .imgBtn-item{
+
+        .imgBtn-item {
             display: inline-flex;
             justify-content: space-evenly;
             line-height: 2.7;
         }
     }
-    /deep/.img-btn>span{
+
+    /deep/.img-btn>span {
         min-width: 34px !important;
-        &:nth-child(1){
+
+        &:nth-child(1) {
             margin-right: 8px;
         }
-        &:nth-child(2){
+
+        &:nth-child(2) {
             margin-right: 10px;
         }
     }
+
+    /deep/.bigimg {
+        height: 34px !important;
+        width: 34px;
+    }
+
     .ypboxL {
         height: calc(100vh - 450px);
         border: 1px solid #ebeef5;

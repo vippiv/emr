@@ -67,6 +67,8 @@
         name: 'personMaintertiary',
         data() {
             return {
+                hasName: '',
+                hasInfo: false,
                 pageSize: 20,
                 pageNos: 1,
                 total: 0,
@@ -176,6 +178,10 @@
             },
             handleSearch() {
                 this.get_GetInformation(this.tplName)
+                this.hasInfo = true
+            },
+            infoSelect() {
+                this.get_GetInformation(this.hasName)
             },
             get_GetInformation(tpname) {
                 let params = {
@@ -183,6 +189,8 @@
                     pageNos: this.pageNos,
                     Code: encodeURI(tpname.trim())
                 }
+                // 存查询的名称
+                this.hasName = params.Code
                 this.GET_LEVELINFO(params).then((res) => {
                     if (res.code === 1) {
                         this.total = res.values.total
@@ -198,12 +206,20 @@
             pageSizeChange(size) {
                 console.log(size)
                 this.pageSize = size
-                this.get_GetInformation('')
+                if (this.hasInfo) {
+                    this.infoSelect()
+                } else {
+                    this.handleSearch()
+                }
             },
             currentPageChange(val) {
                 console.log(val)
                 this.pageNos = val
-                this.get_GetInformation('')
+                if (this.hasInfo) {
+                    this.infoSelect()
+                } else {
+                    this.handleSearch()
+                }
             },
             // 添加三级检诊
             handleClicFn() {
@@ -263,15 +279,17 @@
         font-size: 14px;
         color: #ffffff;
     }
+
     .person-main-tertiary {
         height: 100%;
 
         .el-main {
             overflow: hidden;
             padding: 0px;
+
             /deep/.el-table {
-            overflow-y: auto;
-                
+                overflow-y: auto;
+
             }
         }
     }
@@ -289,7 +307,8 @@
             line-height: 2.7;
         }
     }
-        /deep/.img-btn>span {
+
+    /deep/.img-btn>span {
         min-width: 34px !important;
 
         &:nth-child(1) {

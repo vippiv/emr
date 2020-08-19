@@ -29,8 +29,8 @@
                 </div>
             </div>
         </div>
-        <div class="pagoverscroll" v-else>
-            <el-table :data="personDatas" border style="width: 100%;" height="600" size="mini" highlight-current-row @row-dblclick="handleBkTable">
+        <div class="pagover" v-else>
+            <el-table :data="personDatas" border style="width: 100%;" height="calc(100vh - 230px)" size="mini" highlight-current-row @row-dblclick="handleBkTable">
                 <el-table-column prop="DOCTOR_PART_STATUS" label="状态" align="center"></el-table-column>
                 <el-table-column prop="DEPT_NAME_CN" label="所在科室" align="center" width="130"></el-table-column>
                 <el-table-column prop="IP_VISIT_STATUS" label="住院就诊状态" align="center" width="130"></el-table-column>
@@ -218,6 +218,9 @@
 
         .pagoverscroll {
             height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+        .pagover {
             overflow-y: auto;
         }
     }

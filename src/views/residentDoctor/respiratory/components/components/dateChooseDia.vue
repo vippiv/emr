@@ -46,7 +46,7 @@
 		data () {
 			return {
 				insertForm: {
-					dateChoose: new Date(),
+					dateChoose: moment(new Date()).format('YYYY/MM/DD HH:mm'),
 					dateMax: '',
 					dateMin: '',
 					actionTag: 'create'
@@ -67,6 +67,9 @@
 						this.insertForm.dateMax = this.dateRange.dateMax
 						if (new Date(this.dateRange.dateMax).getTime() > new Date(this.insertForm.dateChoose).getTime()) {
 							this.insertForm.dateChoose = this.dateRange.dateMax
+						}
+						if (new Date(this.dateRange.dateMax).getTime() === new Date(this.insertForm.dateChoose).getTime()) {
+							this.insertForm.dateChoose = moment(new Date(new Date(this.dateRange.dateMax).getTime() + 1 * 60 * 1000)).format('YYYY/MM/DD HH:mm')
 						}
 					}
 				}

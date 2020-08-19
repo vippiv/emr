@@ -76,13 +76,103 @@ const handleActiveX = {
 		this.tools.rawObj = obj
 		return this
 	},
+	//根据名称获取结构的类型，结构包括数据组，数据元及保护区域
+	getStructTypeByName(name) {
+		this.obj.GetStructTypeByName(name)
+	},
+	//移除所有指定的元素设置的自定义事件
+	removeAllStructsListeners() {
+		this.obj.RemoveAllStructsListeners()
+	},
+	//为某个结构增加回调事件
+	addListenerforOneStruct(StructName,lListenType, pCallback) {
+		console.log('=====', pCallback)
+		console.log('类型',lListenType)
+		this.obj.AddListenerforOneStruct(StructName, lListenType,pCallback)
+	},
+	//设置在开启全局监听时，哪些对象会产生相应的事件
+	setGlobalDocumentListener(bNeedSection, bNeedNewControl, bNeedCustomToolBar, bNeedDelAndIns) {
+		this.obj.SetGlobalDocumentListener(bNeedSection, bNeedNewControl, bNeedCustomToolBar, bNeedDelAndIns)
+	},
+	//开启全局监听器，监听的事件非常多
+	addGlobalDocumentListener() {
+		this.obj.AddGlobalDocumentListener()
+	},
+	//鼠标双击Section时产生的事件
+	nsoSectionDBClick(name) {
+		this.obj.NsoSectionDBClick(name)
+	},
+	//为表格的单元格设置保护或者取消保护。保护状态下单元格无法被修改
+	protectTableByCell(table, cell, isprotected) {
+		this.obj.ProtectTableByCell(table, cell, isprotected)
+	},
+	//设置指定表格的单元格的文本
+	putCellContent(table, cell, value) {
+		this.obj.PutCellContent(table, cell, value)
+	},
+	//批量设置指定表格单元格的文本（传数组）
+	putCellContentByArray(table, cell, value) {
+		this.obj.PutCellContentByArray(table, cell, value)
+	},
+	//删除文档末尾的空白行、空格、Tab键，及控制是否删除文末分页符
+	deleteRedundantEx(bBlankLine,bSpace,bTag,bDelPageBreak) {
+		this.obj.DeleteRedundantEx(bBlankLine,bSpace,bTag,bDelPageBreak)
+	},
 	// 插入表格
 	insertTable(obj) {
 		this.obj.InsertTable("Table", 3, 2)
 	},
+	// 插入表格
+	insertPageTable(table,col,row) {
+		this.obj.InsertTable(table,col,row)
+	},
+	// 删除表格
+	deleteTable(table) {
+		this.obj.DeleteTable(table)
+	},
 	//获取单元格内容
-	getCellContent(tname,cname) {
-		this.obj.GetCellContent(tname,cname)
+	getCellContent(tname, cname) {
+		return this.obj.GetCellContent(tname, cname)
+	},
+	// 获取光标所在的表格的单元格名称
+	getTableCellNameByCurrentCursor() {
+		return this.obj.GetTableCellNameByCurrentCursor()
+	},
+	// 返回当前光标位置的表格名
+	getTableNameByCurrentCursor() {
+		return this.obj.GetTableNameByCurrentCursor()
+	},
+	// 获取当前文档中所有表格名字
+	getAllTableNameByCurrentDoc() {
+		return this.obj.GetAllTableNamesByCurrentDoc()
+	},
+	// 表格病历里获取每页开头位置的第一个非标题行的单元格名称
+	getTableCellNameByPage(pageinfo, nParam) {
+		return this.obj.GetTableCellNameByPage(pageinfo, nParam)
+	},
+	//得到表格的行数
+	getTableRowCount(tname) {
+		return this.obj.GetTableRowCount(tname)
+	},
+	//返回表格所有列数
+	getTableColCount(tname) {
+		return this.obj.GetTableColCount(tname)
+	},
+	//获取包含表格的xml信息
+	getXmlInfoWithTable(TableName, TableProp, RegionProp, SectionProp, NewControlProp, TableCellProp, Rev1, Rev2) {
+		return this.obj.GetXmlInfoWithTable(TableName, TableProp, RegionProp, SectionProp, NewControlProp, TableCellProp, Rev1, Rev2)
+	},
+	//按照定位xml定位到表格的某个单元格
+	getTableCellNamesByXML(CellXml, Rev1, Rev2) {
+		return this.obj.GetTableCellNamesByXML(CellXml, Rev1, Rev2)
+	},
+	//返回当前光标的页码
+	getCurrentCursorPage() {
+		return this.obj.GetCurrentCursorPage()
+	},
+	//设置页脚的文本内容，如果没有页脚不会自动插入页脚
+	setFooterTextEx(Text,ParaStyle,Rev1,Rev2) {
+		this.obj.SetFooterTextEx(Text,ParaStyle,Rev1,Rev2)
 	},
 	// 关闭当前文档
 	closeDoc(obj) {
@@ -374,6 +464,13 @@ const handleActiveX = {
 	 */
 	getCurrentRegion() {
 		return this.obj.GetCurrentRegionName()
+	},
+	/**
+	 * 鼠标双击区域时产生的事件
+	 * @return {[type]} [description]
+	 */
+	nsoRegionDBClick(name) {
+		this.obj.NsoRegionDBClick(name)
 	},
 	/**
 	 * [返回选中区域Region名称列表]

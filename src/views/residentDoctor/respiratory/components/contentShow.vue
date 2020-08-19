@@ -28,6 +28,10 @@
 	import Evtbus from '@/utils/bus'
 	import handleTemperatureSheetData from '@/utils/temperatureSheet'
 	import moment from 'moment'
+	import doctorAdvice from './doctorAdvice'
+	import reportAnalysis from './reportAnalysis'
+	import outPatientReportAnalysis from './outPatientReportAnalysis'
+	import textCheckReport from './textCheckReport'
 
 	const { mapActions } = originAction.createNamespacedHelpers('residentDoctor')
 
@@ -62,6 +66,12 @@
 				patientInfo: state => state.residentDoctor.patientInfo,
 				medisineOperationItem: state => state.residentDoctor.medisineOperationItem
 			})
+		},
+		components: {
+			doctorAdvice,
+			reportAnalysis,
+			textCheckReport,
+			outPatientReportAnalysis
 		},
 		inject: ['self'],
 		created () {
@@ -119,7 +129,7 @@
 				Evtbus.$on('InsertActiveXTab', (obj, cb) => {
 					let tabIndex = null, needTabIndex = -1
 					this.editableTabs.forEach((item, index) => {
-						if (item.title === obj.label || item.filePath === obj.filePath) {
+						if (item.title === obj.label || (item.filePath === obj.filePath && obj.filePath)) {
 							tabIndex = item.tabIndex
 							needTabIndex = index
 						}
@@ -128,32 +138,45 @@
 					if (tabIndex) {
 						this.actionControlActiveXHandler(obj)
 						this.editableTabsValue = tabIndex + '' // 定位到正确文档
-						// let currentTabIndex = -1, needTabIndex = -1, match = false
-						// _this.editableTabs.forEach((tab, index) => {
-						// 	let objCdt = new Date(obj.capion_Date_Time).getTime()
-						// 	let tabCdt = new Date(tab.capion_Date_Time).getTime()
-						// 	if (_this.editableTabsValue === tab.name && objCdt === tabCdt) {
-						// 		match = true
-						// 	}
-						// 	if (objCdt === tabCdt) {
-						// 		needTabIndex = index
-						// 	}
-						// })
-						// // 当前tab不是我们要的tab则执行切换
-						// if (!match) {
-							// this.handleClick(this.editableTabs(needTabIndex))
-						// }
-						// 定位到正确区域
+						// 切换正确的this.editableTabs对象
 						this.handleClick(this.editableTabs[needTabIndex])
+						// 定位到正确区域
 						this.actionLoctionRegion(obj.regionNum)
 						return
 					}
 					if (obj.filePath && obj.filePath.includes('.odt')) { // 加载odt文档
+						const _this = this
+						if (cb) {
+							cb = function() {
+								cb()
+								_this.actionLoctionRegion(obj.regionNum)
+							}
+						} else {
+							cb = function() {
+								_this.actionLoctionRegion(obj.regionNum)
+							}
+						}
 						loadOdt(obj, cb)
 						Evtbus.$emit('showDocHandleBtn', true)
 					} else if (obj.label.indexOf('体温单') > -1) { // 加载其他文档
 						this.actionGetTemperatureSheetData('2020/07/28')
 						this.componentName = 'ckThermometer'
+						Evtbus.$emit('showDocHandleBtn', false)
+						this.addTab(obj)
+					} else if (obj.label.indexOf('住院医嘱') > -1) {
+						this.componentName = 'doctorAdvice'
+						Evtbus.$emit('showDocHandleBtn', false)
+						this.addTab(obj)
+					} else if (obj.label.indexOf('门诊报告分析') > -1) {
+						this.componentName = 'outPatientReportAnalysis'
+						Evtbus.$emit('showDocHandleBtn', false)
+						this.addTab(obj)
+					} else if (obj.label.indexOf('报告分析') > -1) {
+						this.componentName = 'reportAnalysis'
+						Evtbus.$emit('showDocHandleBtn', false)
+						this.addTab(obj)
+					} else if (obj.label.indexOf('普通文本检查报告') > -1) {
+						this.componentName = 'textCheckReport'
 						Evtbus.$emit('showDocHandleBtn', false)
 						this.addTab(obj)
 					}
@@ -201,7 +224,7 @@
 					this.editableTabs = []
 				})
 			},
-			// 根据regionNum查找region并定位过去, TODO 不能通过时间定位，存在同样的时间
+			// 根据regionNum查找region并定位过去, 不能通过时间定位，存在同样的时间
 			actionLoctionRegion (regionNum) {
 				if (!regionNum) {
 					return
@@ -419,12 +442,24 @@
 					this.SAVE_MEDISINE_OPERATION_DOC(deepCopy(obj))
 					// 恢复文档更改监听
 					this.actionDocMidifyListener()
+				} else if (obj.label.indexOf('体温单') > -1) { // 加载其他文档
+					this.actionGetTemperatureSheetData('2020/07/28')
+					this.componentName = 'ckThermometer'
+					Evtbus.$emit('showDocHandleBtn', false)
+				} else if (obj.label.indexOf('住院医嘱') > -1) {
+					this.componentName = 'doctorAdvice'
+					Evtbus.$emit('showDocHandleBtn', false)
+				} else if (obj.label.indexOf('报告分析') > -1) {
+					this.componentName = 'reportAnalysis'
+					Evtbus.$emit('showDocHandleBtn', false)
+				} else if (obj.label.indexOf('普通文本检查报告') > -1) {
+					this.componentName = 'textCheckReport'
+					Evtbus.$emit('showDocHandleBtn', false)
 				}
 				// 控制顶部操作按钮显示种类
 				this.actionControlActiveXHandler(obj)
 			},
 			handleGetNewTemperatureData (date) {
-				console.log('date', moment(new Date(date)).format('YYYY/MM/DD'))
 				this.actionGetTemperatureSheetData(moment(new Date(date)).format('YYYY/MM/DD'))
 			}
 		},

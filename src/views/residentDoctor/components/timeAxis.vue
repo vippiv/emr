@@ -18,7 +18,7 @@
 <script type="text/javascript">
     export default {
         name: 'timeAxis',
-        data() {
+        data () {
             return {
                 formInline: {
                     date1: ''
@@ -26,7 +26,7 @@
             }
         },
         methods: {
-            handleClicFn() {
+            handleClicFn () {
 
             }
         }
@@ -51,6 +51,7 @@
 
     /deep/.img-btn>span {
         min-width: 34px !important;
+        min-height: 34px !important;
 
         &:nth-child(1) {
             margin-right: 3px;

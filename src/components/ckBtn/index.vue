@@ -4,6 +4,7 @@
 		type="text"
 		size="medium"
 		@click="$emit('click')"
+		@dblclick="$emit('dblclick')"
 		>
 		<i :class="`iconfont ${icon}`"></i>
 		<slot></slot>

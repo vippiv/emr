@@ -57,9 +57,9 @@
                             </el-checkbox-group>
                         </el-form-item>
                         <el-form-item>
-                            <el-button @click="infoSelect()" size="small">模糊查询</el-button>
-                            <el-button @click="handlePxClicFn()" size="small">模板排序</el-button>
-                            <el-button @click="toggleSelection(tableData)" size="small">全选</el-button>
+                            <el-button @click="infoSelect()" plain type="primary" size="small">模糊查询</el-button>
+                            <el-button @click="handlePxClicFn()" plain type="primary" size="small">模板排序</el-button>
+                            <el-button @click="toggleSelection(tableData)" plain type="primary" size="small">全选</el-button>
                         </el-form-item>
                     </el-form>
                 </el-header>
@@ -324,6 +324,8 @@
                 },
                 tableData: [],
                 // 分页
+                hasName: '',
+                hasInfo: false,
                 pageSize: 20,
                 pageNos: 1,
                 total: 0,
@@ -395,9 +397,11 @@
             },
             // 模板切换
             checkChange() {
-                this.handleNodeClick(this.currentTreeNode)
-                this.currentTreeNode = this.currentTreeNode
-                this.get_GetSyInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetSyInformation()
+                }
             },
             // 双击打开word编辑器
             handleOpenWordEdit(row, column, event) {
@@ -408,7 +412,7 @@
                     userID: this.loginUserId.UserId, //登录人ID
                     itemFlag: row.ITEM_FLAG
                 }
-                console.log(JSON.stringify(data))
+                // console.log(JSON.stringify(data))
                 this.TemplateDoubleClick(data).then(res => {
                     console.log(res)
                     this.wordcode = res.code
@@ -653,6 +657,7 @@
                         this.total = 0
                         this.tableData = []
                     }
+                    this.hasInfo = false
                 })
             },
             // 获取业务域和科室
@@ -954,11 +959,19 @@
             },
             pageSizeChange(size) {
                 this.pageSize = size
-                this.get_GetSyInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetSyInformation()
+                }
             },
             currentPageChange(val) {
                 this.pageNos = val
-                this.get_GetSyInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetSyInformation()
+                }
             },
             // 排序弹窗
             handlePxClicFn() {
@@ -1134,7 +1147,10 @@
             // 模板查询
             infoSelect() {
                 if (!this.tplName) {
-                    this.$message.error("请输入模板名称或者模板拼音码或者模板五笔码")
+                    this.$message({
+                        type: 'warning',
+                        message: '请输入模板名称或者模板拼音码或者模板五笔码!'
+                    })
                     return
                 }
                 const params = {
@@ -1144,11 +1160,30 @@
                     cbTY: this.tplTypeChecked.indexOf("ty") > -1 ? "1" : "0",
                     pageSize: this.pageSize,
                     pageNos: this.pageNos
-                };
+                }
+                // 存查询的名称
+                this.hasName = params.plateName
                 this.GET_INFOLISTBYSELECT(params).then(res => {
+                    this.hasInfo = true
                     this.total = res.values.total
                     this.tableData = res.values.values
-                });
+                })
+            },
+            // 分页查询
+            hasInfoSelect() {
+                const params = {
+                    plateName: this.hasName,
+                    cbWoman: this.tplTypeChecked.indexOf('woman') > -1 ? '1' : '0',
+                    cbMan: this.tplTypeChecked.indexOf('man') > -1 ? '1' : '0',
+                    cbTY: this.tplTypeChecked.indexOf('ty') > -1 ? '1' : '0',
+                    pageSize: this.pageSize,
+                    pageNos: this.pageNos
+                }
+                this.GET_INFOLISTBYSELECT(params).then(res => {
+                    this.hasInfo = true
+                    this.total = res.values.total
+                    this.tableData = res.values.values
+                })
             },
             // 左边模板树查询功能
             filterNode(value, data) {

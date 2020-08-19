@@ -98,6 +98,7 @@
                     this.selfId = this.loginUserId.UserId
                     this.selfPath = this.currentMoveNode.code
                 }
+                console.log(this.multipleSelection)
                 this.multipleSelection.forEach((item, index) => {
                     this.obj = {
                         isMarkMoveOrCopy: this.copyType == 0 ? 'Move' : '',
@@ -107,6 +108,7 @@
                         CREATOR_ID: this.selfId,
                         EMR_TYPE: this.subType == 0 ? 0 : 1,
                         MR_PATH: this.subType == 0 ? ("Template/" + this.selfPath + '/' + item.LIST_CODE) : ("ChildTemplate/" + this.selfPath + '/' + item.LIST_CODE),
+                        OldMR_PATH: item.MR_PATH
                     }
                     params.push(this.obj)
                 })

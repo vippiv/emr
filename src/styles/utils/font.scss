@@ -1,12 +1,12 @@
 @font-face {
     font-family: 'iconfont';
     /* project id 1821146 */
-    src: url('//at.alicdn.com/t/font_1821146_q5riljr31s.eot');
-    src: url('//at.alicdn.com/t/font_1821146_q5riljr31s.eot?#iefix') format('embedded-opentype'),
-        url('//at.alicdn.com/t/font_1821146_q5riljr31s.woff2') format('woff2'),
-        url('//at.alicdn.com/t/font_1821146_q5riljr31s.woff') format('woff'),
-        url('//at.alicdn.com/t/font_1821146_q5riljr31s.ttf') format('truetype'),
-        url('//at.alicdn.com/t/font_1821146_q5riljr31s.svg#iconfont') format('svg');
+    src: url('//at.alicdn.com/t/font_1821146_wlgk5k7c4lo.eot');
+    src: url('//at.alicdn.com/t/font_1821146_wlgk5k7c4lo.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_1821146_wlgk5k7c4lo.woff2') format('woff2'),
+        url('//at.alicdn.com/t/font_1821146_wlgk5k7c4lo.woff') format('woff'),
+        url('//at.alicdn.com/t/font_1821146_wlgk5k7c4lo.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_1821146_wlgk5k7c4lo.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -173,6 +173,21 @@
 // 减号，收缩
 .ck-icon-minus::before {
     content: "\e655"
+}
+
+// 向上
+.ck-icon-up::before {
+    content: "\e656"
+}
+
+// 向下
+.ck-icon-down::before {
+    content: "\ebb4"
+}
+
+// 添加
+.ck-icon-add::before {
+    content: "\e613"
 }
 
 

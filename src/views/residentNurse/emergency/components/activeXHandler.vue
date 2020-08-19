@@ -65,6 +65,7 @@
             <img :src="imgBtnSet.backBtn" class="img-btn">
             <el-button type="text">返回</el-button>
         </div>
+        <!-- <div v-text="tableXML"></div> -->
         <!-- object得层次是最高的，无法通过z-index更改，iframe层级比object高，其他元素设置z-index高于iframe即可 -->
         <iframe class="cover-object" v-show="iframeShow"></iframe>
         <insertLeaderSignDia :insertLeaderSignDiaVis="insertLeaderSignDiaVis" @actionInsertLeaderSign="actionInsertLeaderSign"></insertLeaderSignDia>
@@ -113,6 +114,10 @@
             nursingfilecode: {
                 type: String,
                 default: ''
+            },
+            saveSheet: {
+                type: String,
+                default: ''
             }
         },
         data() {
@@ -151,7 +156,8 @@
                 writingMode: 'writing',
                 toggleBGC: '开启元素颜色',
                 ret: '',
-                printObj: {}
+                printObj: {},
+                tableXML: ''
             }
         },
         components: {
@@ -198,7 +204,8 @@
                 'MEDISINE_RECORD_SYNC',
                 'SAVE_AUTHRITY_CHECK',
                 'UPDATE_MEDISINE_OPERATION_ITEM',
-                'GetFileIndexCount'
+                'GetFileIndexCount',
+                'SaveNurseTemplate'
             ]),
             handlecloseprint(val) {
                 this.isprintshow = false
@@ -357,6 +364,7 @@
                 }
             },
             getDocSaveStatus() { //判断文档是否保存
+                // console.log('——————————————————————————', handleActiveX.tools.docHasChanged())
                 return handleActiveX.tools.docHasChanged()
             },
             handleSaveAsPersonal() {
@@ -376,22 +384,7 @@
                     this.$message.error('请选择病历')
                     return
                 }
-                // this.actionSaveRypg()
-                // this.actionDocHasChanged()
                 this.actionIsGroupDisgnosis()
-                // 护士不需要验证
-                // this.SAVE_AUTHRITY_CHECK({
-                // 	visit_Id: this.patientInfo.VISIT_ID
-                // }).then((res) => {
-                // 	if (res.code === 1) {
-                // 		// 可以保存
-                // 		this.actionSaveRypg()
-                // 		this.actionDocHasChanged()
-                // 		this.actionIsGroupDisgnosis()
-                // 	} else {
-                // 		this.$message.error(res.msg)
-                // 	}
-                // })
             },
             handleBackMain() {
                 this.self.showTree = false
@@ -568,49 +561,9 @@
             actionInsertVectorGraph(vectorGraphUrl) {
                 // 插入矢量图
             },
-            actionSaveRypg() {
-                this.SAVE_RYPG({
-                    visit_Id: this.patientInfo.VISIT_ID,
-                    MR_CODE: this.medisineOperationItem.code
-                })
-            },
-            actionDocHasChanged() {
-                if (this.medisineOperationItem.filePath.indexOf('Template') > -1) { // 如果是新建病程产生的文件则不需要去服务器检查
-                    return
-                }
-                this.DOC_HAS_CHANGED({
-                    openFileTime: moment(this.medisineOperationItem.openTime).format('YYYY-MM-DD HH:mm:ss'),
-                    fileCode: this.medisineOperationItem.filePath.split('//')[1].split('.')[0],
-                    visit_Id: this.patientInfo.VISIT_ID
-                }).then((res) => {
-                    if (res.code === 2) {
-                        // code === 2 表明服务器上的文档已经有更改，要重新打开文档，之前的更改要全部丢掉
-                        this.$message.warning(res.msg)
-                    } else if (res.code == 1) {
-                        // code === 1 会返回入院时间，需要通过axNsoControl.GetAllControlNameByCurrentDoc()方法获得，名为'1000001128'控件的时间
-                        this.getDocAllControl(res.values)
-                    }
-                })
-            },
             actionIsGroupDisgnosis() {
-                // if (this.medisineOperationItem.filePath.indexOf('Template') > -1) { // 如果是新建病程产生的文件则不需要去服务器检查
                 this.docStr = handleActiveX.saveToString()
                 this.actionSaveDocByString()
-                // return
-                // }
-                // this.IS_GROUP_DIAGNOSIS({
-                // 	visit_Id: this.patientInfo.VISIT_ID,
-                // 	Mr_Code: this.medisineOperationItem.code,
-                // 	fileCode: this.medisineOperationItem.filePath.split('//')[1].split('.')[0]
-                // }).then((res) => {
-                // 	if (res.code === 2) {
-                // 		// 属于会诊类别，弹出会诊记录申请单对话框
-                // 	} else {
-                // 		// 可以进行文档保存，先文件上传 TODO
-                // 		this.docStr = handleActiveX.saveToString()
-                // 		this.actionSaveDocByString()
-                // 	}
-                // })
             },
             actionSaveDocByString() {
                 if (!this.docStr) {
@@ -630,7 +583,6 @@
                 if (args.isUpdate === 1) {
                     args.updateFileName = this.medisineOperationItem.filePath.split('//')[1].replace('.odt', '')
                 }
-                // this.ret = args
                 this.UploadFileInfoByString = args
                 this.SAVE_DOC_BY_STRING(args).then((res) => {
                     if (res.code === 1) {
@@ -643,30 +595,47 @@
             actionSaveDocData(fileCode) {
                 this.actionGetSection()
                 this.actionGetControl()
+                // const args = {
+                //     type: 1, // 0 新增；1：修改；下面会做判断，根据情况来更改值
+                //     fileStream: this.docStr,
+                //     strXML: handleActiveX.getStructXml("AllUserProp_CS2C", "Reserve,Reserve2,IsChecked"), // 文本xml
+                //     DataGroup: this.submitSection, // 所有数据组
+                //     DataElement: this.submitControl, // 所有数据元
+                //     sa: handleActiveX.obj.GetRegionNamesWithPostil(),
+                //     s1: handleActiveX.obj.GetRecensionInfoByRequiment("", "", 100, this.DateTime.MinValue, this.DateTime.MaxValue),
+                //     region: handleActiveX.getAllRegion(),
+                //     visit_Id: this.patientInfo.VISIT_ID,
+                //     Mr_Code: this.medisineOperationItem.code,
+                //     capion_Date_Time: this.medisineOperationItem.capion_Date_Time, //标题时间
+                //     listcode: this.medisineOperationItem.code2,
+                //     fileCode: fileCode,
+                //     userid: this.userInfo.UserId,
+                //     username: this.userInfo.UserName,
+                //     deptcode: this.deptID
+                // }
                 const args = {
-                    type: 1, // 0 新增；1：修改；下面会做判断，根据情况来更改值
-                    fileStream: this.docStr,
-                    strXML: handleActiveX.getStructXml("AllUserProp_CS2C", "Reserve,Reserve2,IsChecked"), // 文本xml
-                    DataGroup: this.submitSection, // 所有数据组
-                    DataElement: this.submitControl, // 所有数据元
-                    sa: handleActiveX.obj.GetRegionNamesWithPostil(),
-                    s1: handleActiveX.obj.GetRecensionInfoByRequiment("", "", 100, this.DateTime.MinValue, this.DateTime.MaxValue),
-                    region: handleActiveX.getAllRegion(),
-                    visit_Id: this.patientInfo.VISIT_ID,
-                    Mr_Code: this.medisineOperationItem.code,
-                    capion_Date_Time: this.medisineOperationItem.capion_Date_Time, //标题时间
-                    listcode: this.medisineOperationItem.code2,
-                    fileCode: fileCode,
-                    userid: this.userInfo.UserId,
-                    username: this.userInfo.UserName,
-                    deptcode: this.deptID
+                    fileCode: this.nursingfilecode,
+                    VistID: this.patientInfo.VISIT_ID,
+                    mrCode: this.medisineOperationItem.code,
+                    DeptCode: this.deptID,
+                    UserName: this.userInfo.UserName,
+                    UserId: this.userInfo.UserId,
+                    SaveSheet: 'EMR_HL_GK',
+                    DataGroup: this.submitSection,
+                    NurseSheetInfo: {
+                        VISITID: this.patientInfo.VISIT_ID,
+                        TYPEID: 11,
+                        Values: this.getDocData(),
+                        DEPTID: this.deptID
+                    }
                 }
+                console.log('22222222222', args)
                 // args.type的值要根据情况来判断
                 if (this.medisineOperationItem.filePath.indexOf('Template') > -1) {
                     args.type = 0
                 }
                 this.ret = JSON.stringify(args)
-                this.SAVE_DOC_DATA(args).then((res) => {
+                this.SaveNurseTemplate(args).then((res) => {
                     if (res.code === 1) {
                         this.$message.success('保存成功')
                         // 把标签中的'*'号去掉，如果是新增还要在标题上加上时间, 0 新增；1：修改
@@ -690,6 +659,47 @@
                         this.$message.error(res.msg)
                     }
                 })
+            },
+            getDocData() { //获取文档表格数据
+                const tablename = handleActiveX.getAllTableNameByCurrentDoc().split(',')[0] //所有表格名称
+                // console.log('tablename', tablename)
+                const tablerows = handleActiveX.getTableRowCount(tablename) //表格所有行数
+                // console.log('tablerows', tablerows)
+                const tablecols = handleActiveX.getTableColCount(tablename) //表格所有列数
+                // console.log('tablecols', tablecols)
+                const pagenumber = handleActiveX.getCurrentCursorPage() //页码
+                console.log('页码', pagenumber)
+                const capitalArr = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
+                var rows = tablerows
+                var col = tablecols
+                var tableRowColData = new Array()
+                var rownumbers = ''
+                for (var i = 3; i <= rows; i++) {
+                    var a = [];
+                    for (var j = 0; j < col; j++) {
+                        var tabCol = capitalArr[j] + i;
+                        var val = handleActiveX.getCellContent(tablename, tabCol).trim();
+                        if (val == '') {
+                            a.push(null)
+                        } else {
+                            a.push(val)
+                        }
+
+                    }
+                    // rownumbers += (i - 2)+","
+                    // console.log(i - 2)
+                    // console.log(rownumbers)
+                    // a.unshift(this.deptID)
+                    // a.unshift(this.userInfo.UserName)
+                    // a.unshift(this.userInfo.UserId)
+                    a.unshift(i - 2)
+                    a.unshift(pagenumber)
+                    // console.log(a)
+                    tableRowColData.push(a);
+                }
+                // console.log('11111', tableRowColData)
+                return tableRowColData
+
             },
             // 获取页面上所有的数据组(section)
             actionGetSection() {
@@ -784,5 +794,11 @@
             padding-top: 5px;
             padding-bottom: 5px;
         }
+
+    }
+
+    /deep/.el-button.el-button--text {
+        position: relative;
+        top: 1px;
     }
 </style>

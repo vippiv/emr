@@ -31,7 +31,8 @@
                         <el-menu default-active="2" class="el-menu-vertical-demo">
                             <el-submenu v-for="item in rightTree" :key="item.id" :index="item.id">
                                 <template slot="title">
-                                    <span>{{item.label}}</span>
+                                    <!-- <span>{{item.label}}</span> -->
+                                    <div :class="!item.children ? 'hiddenIcon' : ''"><span>{{item.label}}</span></div>
                                 </template>
                                 <div v-if="item.children">
                                     <div v-for="(subitem, subindex) in item.children" :key="subindex">
@@ -44,16 +45,16 @@
                 </el-tabs>
             </el-aside>
             <el-main>
-                <activeXHandler :nursingfilecode='nursingfilecode'></activeXHandler>
+                <activeXHandler :nursingfilecode='nursingfilecode' :saveSheet='saveSheet'></activeXHandler>
                 <div class="main-box">
-                    <div class="main-imgbtn">
+                    <div class="main-imgbtn" style="height:calc(100vh - 165px);overflow-x:auto;">
                         <!-- <ckBtn icon="ck-icon-search" @click="handleClicFn">常用语</ckBtn>
     					<ckBtn icon="ck-icon-export" @click="handleReturn">返回</ckBtn> -->
 
-                        <contentShow></contentShow>
+                        <contentShow @getnursTreeData='getnursTreeData' style="overflow:auto;"></contentShow>
                     </div>
                     <div class="main-right">
-                        <letNursTpl @handleletnurstpl='handleletnurstpl'></letNursTpl>
+                        <letNursTpl></letNursTpl>
                     </div>
                 </div>
             </el-main>
@@ -113,6 +114,7 @@
         },
         data() {
             return {
+                saveSheet: '',
                 nursingfilecode: '',
                 positionshow: false,
                 show: false,
@@ -165,6 +167,15 @@
                 'TreeVisitFatherInfo',
                 'TreeVisitInfo'
             ]),
+            getnursTreeData(val) {
+                // console.log('9999', val)
+                if (val.filePath.indexOf('//') > -1) { //左边边菜单树
+                    this.nursingfilecode = val.id
+                } else { //右边菜单树
+                    this.nursingfilecode = ''
+                }
+                this.saveSheet = val.label
+            },
             handleclosenewposition() { //定位
 
             },
@@ -223,6 +234,12 @@
                     setTimeout(() => {
                         this.topMenuDiaVis = true
                     }, 1000)
+                } else if (val == 'returnback') { //退出
+                    this.$router.push({
+                        path: '/nurse'
+                    }).catch(err => {
+                        console.log('输出报错', err)
+                    })
                 }
             },
             nursegetUsersByGroup(val) {
@@ -297,13 +314,8 @@
                     this.getSYS_T_VISIT_1ByVisitId(this.patientID)
                 }
             },
-            handleletnurstpl(val) {
-                this.nursingfilecode = val
-            },
             // 打开odt文档
             handleShowThisData(obj) {
-                console.log('1111111111111111', obj)
-                this.nursingfilecode = obj.id
                 // this.SAVE_MEDISINE_OPERATION_DOC(obj) // 记录当前操作项      
                 if (this.activeXTab.length > 0) {
                     if (this.patientInfo.id === this.activeXTab[0].patientID) {
@@ -399,6 +411,7 @@
         .desc {
             line-height: 2;
             text-align: center;
+
             span {
                 padding-right: 5px;
             }
@@ -411,7 +424,6 @@
 
         .main-box {
             padding-top: 0px;
-            padding-left: 5px;
             padding-right: 0px;
             display: flex;
 
@@ -437,6 +449,7 @@
     /deep/.el-main {
         padding: 0px 0px 0px 15px;
     }
+
     /deep/.el-card__body {
         padding: 10px 10px;
     }
@@ -450,5 +463,15 @@
     /deep/.el-tabs__nav-next {
         line-height: 2.8;
         height: 30px;
+    }
+
+    /deep/.el-menu-item,
+    /deep/.el-submenu__title {
+        height: 46px;
+        line-height: 46px;
+    }
+
+    /deep/ .hiddenIcon+.el-submenu__icon-arrow {
+        display: none;
     }
 </style>

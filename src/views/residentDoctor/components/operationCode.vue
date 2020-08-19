@@ -348,8 +348,11 @@
         display: inline-flex;
         justify-content: space-evenly;
         margin: 12px 0 0 0;
-    }
 
+        /deep/.el-button {
+            min-width: 76px !important;
+        }
+    }
     .imgBtnBox {
         margin-bottom: 3px;
         margin-top: -15px;
@@ -363,6 +366,7 @@
 
     /deep/.img-btn>span {
         min-width: 34px !important;
+        min-height: 34px !important;
 
         &:nth-child(1) {
             margin-right: 3px;

@@ -32,7 +32,7 @@ const handleTemperatureSheetData = {
 					// dayItem -> '4:10:0|36.3'
 					let temperatureDayTimeData = dayItem.split(':')
 					let temperature = temperatureDayTimeData[2].split('|') // 温度数据，temperature[0], 0 -> 口温 1 -> 腋温， 2-> 肛温
-					if (parseInt(temperatureDayTimeData[0], 10) === parseInt(i, 10) + 1 && parseInt(temperatureDayTimeData[1], 10) === parseInt(dis, 10)) {
+					if (parseInt(temperatureDayTimeData[0], 10) === parseInt(i, 10) + 1 && parseInt(this.fixTimePoint(temperatureDayTimeData[1]), 10) === parseInt(dis, 10)) {
 						if (parseInt(temperature[0], 10) === 0) {
 							baseData.MOUTH = temperature[1] // 口温
 						}
@@ -59,7 +59,6 @@ const handleTemperatureSheetData = {
 		return perfectData
 	},
 	dealAxiosData (data) {
-		const timeDistance = [2, 6, 10, 14, 18, 22]
 		const perfectData = []
 		// 坐标轴数据模板
 		const axiosData = {
@@ -107,6 +106,25 @@ const handleTemperatureSheetData = {
 			perfectData.push(baseData)
 		}
 		return perfectData
+	},
+	fixTimePoint (timePoint) {
+		const timeDistance = [2, 6, 10, 14, 18, 22]
+		let pointIndex = -1
+		if (timeDistance.find((n) => n === timePoint)) {
+			return timePoint
+		}
+		for (let i = 0; i < timeDistance.length; i++) {
+			let ret = timeDistance[i] - timePoint
+			if (ret > 0) {
+				pointIndex = i
+				break
+			}
+		}
+		if ((timeDistance[pointIndex] - timePoint) > Math.abs((timeDistance[pointIndex - 1] - timePoint))) {
+			return timeDistance[pointIndex - 1]
+		} else {
+			return timeDistance[pointIndex]
+		}
 	}
 }
 

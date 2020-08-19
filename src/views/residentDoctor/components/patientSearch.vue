@@ -6,10 +6,10 @@
         </div>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
             <el-form-item label="病人ID:">
-                <el-input size="mini" v-model="formInline.patientId" @input="changeId" style="width:79%"></el-input>
+                <el-input size="mini" v-model="formInline.patientId" style="width:79%"></el-input>
             </el-form-item>
             <el-form-item label="病人姓名:">
-                <el-input size="mini" v-model="formInline.patientName" @input="changeName" style="width:79%"></el-input>
+                <el-input size="mini" v-model="formInline.patientName" style="width:79%"></el-input>
             </el-form-item>
         </el-form>
         <div class="content">
@@ -53,6 +53,9 @@
                 nameInput: '',
                 idInput: '',
                 // 分页
+                hasInfo: false,
+                hasName: '',
+                hasId: '',
                 pageSize: 20,
                 pageNos: 1,
                 total: 0,
@@ -76,20 +79,21 @@
                         callback: action => {}
                     })
                 } else {
+                    this.hasInfo = true
                     this.getInformation()
                 }
             },
             // 查询所有患者
             getInformation() {
-                if (this.nameInput == '' && this.idInput == '') {
-                    return
-                }
                 let params = {
                     VisitID: this.formInline.patientId,
                     VisitName: encodeURI(this.formInline.patientName.trim()),
                     pageSize: this.pageSize,
                     pageNos: this.pageNos,
                 }
+                // 存查询的内容
+                this.hasName = params.VisitName
+                this.hasId = params.VisitID
                 this.GETVISIT(params).then((res) => {
                     console.log(res)
                     if (res.code == 1) {
@@ -97,34 +101,48 @@
                         this.total = res.values.total
                     }
                 })
-
+            },
+            // 分页查询
+            hasInfoSelect() {
+                let params = {
+                    VisitID: this.hasId,
+                    VisitName: this.hasName,
+                    pageSize: this.pageSize,
+                    pageNos: this.pageNos,
+                }
+                // 存查询的内容
+                this.hasName = params.VisitName
+                this.hasId = params.VisitID
+                this.GETVISIT(params).then((res) => {
+                    console.log(res)
+                    if (res.code == 1) {
+                        this.tableData = res.values.values
+                        this.total = res.values.total
+                    }
+                })
             },
             pageSizeChange(size) {
-                if(this.total == 0) {
-                  return
+                if (this.total == 0) {
+                    return
                 }
                 this.pageSize = size
-                this.getInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.getInformation()
+                }
             },
             currentPageChange(val) {
+                if (this.total == 0) {
+                    return
+                }
                 this.pageNos = val
-                this.getInformation()
-            },
-            // 值为空的时候清空列表
-            changeName(val) {
-                this.nameInput = val
-                if (val == '') {
-                    this.tableData = []
-                    this.total = 0
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.getInformation()
                 }
             },
-            changeId(val) {
-                this.idInput = val
-                if (val == '') {
-                    this.tableData = []
-                    this.total = 0
-                }
-            }
         }
     }
 </script>
@@ -151,6 +169,7 @@
 
     /deep/.img-btn>span {
         min-width: 34px !important;
+        min-height: 34px !important;
 
         &:nth-child(1) {
             margin-right: 3px;

@@ -12,13 +12,16 @@
                     <el-button type="primary" size="mini" @click="handleRefresh">刷新</el-button>
                 </el-col>
             </el-row>
-            <el-tab-pane label="护理病历模板" name="first">
-                <el-tree class="filter-tree" :data="bldata" :props="defaultProps" :filter-node-method="filterNode" ref="tree" highlight-current @node-click="handleHlNodeClick">
-                    <span slot-scope="{node, data}">
-                        <span @dblclick="handleBlNodeClick(data, node)">{{data.label}}</span>
+            <!-- <el-tab-pane label="" name="first"> -->
+            <el-tree class="filter-tree" :data="bldata" :props="defaultProps" :filter-node-method="filterNode" ref="tree" @node-click="handleHlNodeClick">
+                <span slot-scope="{node, data}">
+                    <!-- <span @dblclick="handleBlNodeClick(data, node)">{{data.label}}</span> -->
+                    <span @dblclick="handleBlNodeClick(data, node)">
+                        <ckBtn @dblclick="handleBlNodeClick(data, node)" :icon="data.Tag === 1 ? (node.expanded ? 'ck-icon-minus' : 'ck-icon-plus') : 'ck-icon-file2'"></ckBtn>{{ node.label }}
                     </span>
-                </el-tree>
-            </el-tab-pane>
+                </span>
+            </el-tree>
+            <!-- </el-tab-pane> -->
             <!-- <el-tab-pane label="护理记录单模板" name="second">
                 <el-tree class="filter-tree" :data="hldata" :props="defaultProps" :filter-node-method="filterNode" ref="hltree" highlight-current @node-click="handleBlNodeClick"></el-tree>
             </el-tab-pane> -->
@@ -60,7 +63,7 @@
         created() {
             // this.getBlFatherTempl()
         },
-        activated(){
+        activated() {
             this.getBlFatherTempl()
         },
         methods: {
@@ -89,7 +92,7 @@
             },
             getBlFatherTempl() {
                 //获取病历模板父节点
-                console.log(this.workbanchcode)
+                // console.log(this.workbanchcode)
                 let data = {
                     WORKBENCH_CODE: this.workbanchcode
                 }
@@ -100,12 +103,15 @@
                 })
             },
             getSonTemplate(val) {
+                // console.log('val', val)
                 let data = {
                     DEPT_ID: val.id,
                     UserID: this.uerInfo.UserId,
                     tag: val.Tag,
-                    label:val.label
+                    label: encodeURI(val.label),
+                    workbenchCode: this.workbanchcode
                 }
+                // console.log(JSON.stringify(data))
                 this.GetSonTemplate(data).then(res => {
                     if (res.code == 1) {
                         this.bldata.forEach(item => {
@@ -126,20 +132,18 @@
                     }
                 })
             },
-            handleHlNodeClick(data, Node){
-                console.log(data)
-                this.$store.dispatch('residentNurse/saveNurTemplateData',JSON.parse(JSON.stringify(data)))
+            handleHlNodeClick(data, Node) {
+                this.$store.dispatch('residentNurse/saveNurTemplateData', JSON.parse(JSON.stringify(data)))
                 this.getSonTemplate(data)
             },
             handleBlNodeClick(data, Node) {
-                console.log('data',data)
-                this.$emit('handleletnurstpl','')
                 if (data.filePath) {
                     // 加载文档
                     const args = {
                         mrCode: data.code,
                         visit_Id: this.patientInfo.id
                     }
+                    // console.log('000000', JSON.stringify(args))
                     new Promise((resolve) => {
                         this.CREATE_NEW_DOC_CHECK_FILE_EXIST(args).then((res) => {
                             resolve(res)
@@ -149,7 +153,7 @@
                             args.listCode = data.code2
                             this.CREATE_NEW_DOC(args).then((res) => {
                                 if (res.code === 1) {
-                                    console.log(res.values)
+                                    // console.log('data', data)
                                     Evtbus.$emit('InsertActiveXTab', data, () => {
                                         handleActiveX.tools.fillPatientInfo(res.values) // 替换患者信息
                                         // 把文档状态改成未修改，这个地方跟住院医生病历书写有点不同
@@ -166,7 +170,7 @@
                         }
                     })
                 } else {
-                    
+
                 }
             },
             filterNode(value, data) {
@@ -191,7 +195,7 @@
         padding: 0 10px;
 
         .filter-tree {
-            height: calc(100vh - 250px);
+            height: calc(100vh - 220px);
             overflow-y: auto;
         }
     }
@@ -204,13 +208,20 @@
             }
         }
     }
-    .let-nursing-tml /deep/.el-tabs__active-bar{
+
+    .let-nursing-tml /deep/.el-tabs__active-bar {
         background: none;
     }
-    .let-nursing-tml /deep/.el-tabs__item.is-active{
-        color:#606266;
+
+    .let-nursing-tml /deep/.el-tabs__item.is-active {
+        color: #606266;
     }
-    .let-nursing-tml /deep/#tab-first{
+
+    .let-nursing-tml /deep/#tab-first {
         margin-left: 100px;
+    }
+
+    /deep/ .el-tree-node__expand-icon {
+        display: none !important;
     }
 </style>

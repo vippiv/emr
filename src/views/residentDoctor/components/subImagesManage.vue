@@ -108,6 +108,7 @@
 
     /deep/.img-btn>span {
         min-width: 34px !important;
+        min-height: 34px !important;
 
         &:nth-child(1) {
             margin-right: 8px;

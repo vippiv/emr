@@ -2,8 +2,9 @@
 	<div class="temperature-chart-container">
 		<div id="temperature"></div>
 		<div class="operation">
-			<el-button type="text" @click="handlePreWeek">上一周</el-button>
-			<el-button type="text" @click="handleNextWeek">下一周</el-button>
+			<ckBtn v-if="needAddbtn" icon="ck-icon-add" @click="handleAddData" style="color: #de7d2c; font-weight: bold;"></ckBtn>
+			<ckBtn icon="ck-icon-up" @click="handlePreWeek" style="color: red"></ckBtn>
+			<ckBtn icon="ck-icon-down" @click="handleNextWeek" style="color: blue"></ckBtn>
 		</div>
 		<!-- <span class="x-axis">X轴</span>
 		<span class="y-axis">y轴</span>
@@ -19,7 +20,16 @@
 
 	export default {
 		name: 'TempertureChart',
-		props: ['temperatureSheetData'],
+		props: {
+			temperatureSheetData: {
+				type: Object,
+				default: () => {}
+			},
+			needAddbtn: {
+				type: Boolean,
+				default: false
+			},
+		},
 		data () {
 			return {
 				xLineLen: {
@@ -61,7 +71,9 @@
 				allArmpitDot: [], // 所有腋窝温度点
 				allMouthDot: [], // 所有口腔温度点
 				allAnuDot: [], // 所有肛温点
-				allPulseDot: [] // 所有脉搏点
+				allPulseDot: [], // 所有脉搏点
+				searchDate: '',
+				lastClick: ''
 			}
 		},
 		computed: {
@@ -678,20 +690,41 @@
 				return this.canavsHeight - this.coordinateOptions.bottomLines * this.coordinateOptions.height
 			},
 			handlePreWeek () {
+				let searchDate = this.temperatureSheetData ? new Date(this.temperatureSheetData.FirstDay).getTime() - 24 * 60 * 60 * 1000 : ''
+				if (!searchDate) {
+					if (this.switchSymbol === 'pre') {
+						searchDate = this.searchDate
+					} else {
+						searchDate = this.searchDate - 24 * 60 * 60 * 1000
+					}					
+				} else {
+					this.searchDate = searchDate
+				}
 				// const distance = Math.abs((new Date(this.topAxisData.switchDate).getTime() - new Date(this.topAxisData.inDate).getTime()) / (24 * 60 * 60 * 1000))
 				// if (distance <= this.xLineLen.day) {
 				// 	alert('无上一页')
 				// 	return
 				// }
 				// 触发接口重新加载数据，传递上一周的起始日期
-				this.$emit('actionGetTemperatureData', new Date(this.temperatureSheetData.FirstDay).getTime() - 24 * 60 * 60 * 1000)
+				this.$emit('actionGetTemperatureData', searchDate)
 				this.switchSymbol = 'pre'
 				// this.zr.clear()
 				// this.init()
 			},
 			handleNextWeek () {
+				let searchDate = this.temperatureSheetData ? new Date(this.temperatureSheetData.LastDay).getTime() + 24 * 60 * 60 * 1000 : ''
+				if (!searchDate) {
+					if (this.switchSymbol === 'next') {
+						searchDate = this.searchDate
+					} else {
+						searchDate = this.searchDate - 24 * 60 * 60 * 1000
+					}
+					searchDate = this.searchDate
+				} else {
+					this.searchDate = searchDate
+				}
 				// 触发接口重新加载数据，传递下一周的起始日期
-				this.$emit('actionGetTemperatureData', new Date(this.temperatureSheetData.LastDay).getTime() + 24 * 60 * 60 * 1000)
+				this.$emit('actionGetTemperatureData', searchDate)
 				this.switchSymbol = 'next'
 				// this.zr.clear()
 				// this.init()
@@ -704,6 +737,9 @@
 				this.caption.patientInfo.bedNo = this.temperatureSheetData.UserBedNo
 				this.caption.patientInfo.inDate = this.temperatureSheetData.VisitInto
 				this.caption.patientInfo.mdsRecord = this.temperatureSheetData.strYM.split('|')[6]
+			},
+			handleAddData () {
+				this.$emit('addData')
 			}
 		}
 	}
@@ -719,6 +755,7 @@
 			position: absolute;
 			top: 17px;
 			left: 15px;
+			font-size: 34px;
 		}
 		.x-axis, .y-axis, .original {
 			position: absolute;

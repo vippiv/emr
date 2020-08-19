@@ -236,6 +236,7 @@
                 try {
                     setTimeout(() => {
                         this.instance.openDocWidthString(index, 2) // 以读写方式打开
+                        this.instance.setUiColorStyle(3)
                     }, 500)
                 } catch (e) {
                     console.log(e)

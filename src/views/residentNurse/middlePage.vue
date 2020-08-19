@@ -32,6 +32,7 @@
             }
         },
         created() {
+            console.log(this.routePath)
             setTimeout(() => {
                 this.getWorkBench()
             }, 500)

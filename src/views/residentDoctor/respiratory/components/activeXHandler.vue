@@ -241,7 +241,8 @@
 				patientInfo: state => state.residentDoctor.patientInfo,
 				medisineOperationItem: state => state.residentDoctor.medisineOperationItem,
 				activeXCheckbox: state => state.global.activeXCheckbox,
-				DateTime: state => state.global.DateTime
+				DateTime: state => state.global.DateTime,
+				workBenchID: state => state.global.workBenchID
 			})
 		},
 		inject: ['self'],
@@ -549,7 +550,12 @@
 					visit_Id: this.patientInfo.VISIT_ID,
 					RegionNames: handleActiveX.getAllRegion() ? handleActiveX.getAllRegion() : ' ',
 					ControlName: handleActiveX.getAllNewControl() ? handleActiveX.getAllNewControl() : ' ',
-					CurrentRegionName: handleActiveX.getCurrentRegion() ? handleActiveX.getCurrentRegion() : ' '
+					CurrentRegionName: handleActiveX.getCurrentRegion() ? handleActiveX.getCurrentRegion() : ' ',
+					UserId: this.userInfo.UserId,
+					UserName: this.userInfo.UserName,
+					DepCode: this.userInfo.DepCode,
+					RoleValue: this.userInfo.RoleValue,
+					isMarkName: this.userInfo.isMarkName
 				}).then((res) => {
 					if (res.code === 1) {
 						if (res.values) {
@@ -576,7 +582,9 @@
 					visit_Id: this.patientInfo.VISIT_ID,
 					RegionNames: handleActiveX.getAllRegion() ? handleActiveX.getAllRegion() : ' ',
 					ControlName: handleActiveX.getAllNewControl() ? handleActiveX.getAllNewControl() : ' ',
-					CurrentRegionName: handleActiveX.getCurrentRegion() ? handleActiveX.getCurrentRegion() : ' '
+					CurrentRegionName: handleActiveX.getCurrentRegion() ? handleActiveX.getCurrentRegion() : ' ',
+					DepCode: this.userInfo.DepCode,
+					WorkApplication: this.workBenchID
 				}).then((res) => {
 					if (res.code === 1) {
 						if (res.values) {
@@ -722,8 +730,6 @@
 							Evtbus.$emit('replaceTabStar', {
 								saveTime: res.values2
 							})
-							// 更新左侧病历树
-							Evtbus.$emit('updateMedisineRecordTree')
 							// 更新medisineOperationItem的相关字段，只有新增的时候才要更新
 							this.UPDATE_MEDISINE_OPERATION_ITEM({
 								filePath: res.values,
@@ -733,7 +739,9 @@
 							})
 						} else {
 							Evtbus.$emit('replaceTabStar')
-						}	
+						}
+						// 更新左侧病历树
+						Evtbus.$emit('updateMedisineRecordTree')
 					} else {
 						this.$message.error(res.msg)
 					}

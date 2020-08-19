@@ -382,8 +382,15 @@ const api = {
         getIsLock: `${platform_doctor}OpenTemplateStyle/IsLock`, // 获取是否可以操作
         setLockDoc: `${platform_doctor}OpenTemplateStyle/Lock`, // 锁定(打开文档用)
         setUnlockDoc: `${platform_doctor}OpenTemplateStyle/Unlock`, // 解锁(关闭文档用)
-
-
+        medisineRecordHistoryList: `${platform_doctor}HistoryMedicalRecord/GetTipVisiSYS_T_VISIT`, // 患者病历历史
+        textCheckReports: `${platform_doctor}NormalTextReportAnalysis/GetNormalTextReportAnalysis`, // 普通门诊检验报告
+        textCheckReportDetail: `${platform_doctor}NormalTextReportAnalysis/GetNormalTextReportAnalysisInfo`, // 普通门诊检验报告详情
+        analysisReports: `${platform_doctor}ReportAnalysis/GetReportAnalysis`, // 获取分析报告
+        analysisReportDetail: `${platform_doctor}ReportAnalysis/GetReportAnalysisResult`, // 获取分析报告详情
+        analysisItemDetail: `${platform_doctor}ReportAnalysis/GetItemResult`, // 单项报告
+        outPatientAnalysisReports: `${platform_doctor}OutpatientDepartmentReport/GetOutpatientDepartmentReport`, // 获取门诊分析报告
+        outPatientAnalysisReportDetail: `${platform_doctor}OutpatientDepartmentReport/GetOutpatientDepartmentReportInfo`, // 获取门诊分析报告详情
+        outPatientAnalysisItemDetail: `${platform_doctor}OutpatientDepartmentReport/GetOtherInfo`, // 门诊单项报告
     },
     /** ***************************住院护士工作站************************************************/
     residentNurse: {
@@ -420,6 +427,19 @@ const api = {
         saveDocByString: `${platform_nurse}FileUpload/UploadFileInfoByString`, // 以字符串方式上传DOC文档
         saveDocData: `${platform_nurse}NurseFileSave/SaveFileInfo`, // 保存DOC文档中的数据(数据组，数据元，区域)
         getFileIndexCount: `${platform_nurse}HospitalNurse/GetFileIndexCount`, // 获取是否打印标识
+        // saveNurseTemplate: `${platform_nurse}SaveTemplate/SaveTemplate`, // 保存
+        saveNurseTemplate:`http://192.168.31.163:90/api/SaveTemplate/SaveTemplate`, // 保存
+        getTemperatureByDay: `${platform_nurse}TemperatureRecording/LoadInfo`, // 获取某天的体温单数据
+        getMeasyreTemperatureHistory: `${platform_nurse}TemperatureRecording/BindData`, // 获取某天的体温测量记录
+        delMeasureDateByDay: `${platform_nurse}TemperatureRecording/DeleteToday`, // 删除某一天的测量数据
+        delMeasureDateByCell: `${platform_nurse}TemperatureRecording/DeleteOne`, // 删除某一单元格的测量数据
+        getNurseInfo: `${platform_nurse}TemperatureRecording/LoadNursing`, // 护理信息
+        getSkinTestOne: `${platform_nurse}TemperatureRecording/SKINTEST1`, // 皮试一
+        getSkinTestTwo: `${platform_nurse}TemperatureRecording/SKINTEST2`, // 皮试二
+        getFaece: `${platform_nurse}TemperatureRecording/FAECES`, // 大便选项
+        temperatureTimeSet: `${platform_nurse}TemperatureRecording/LoadTime`, // 体温单时间选项
+        saveTemeratureData: `${platform_nurse}TemperatureRecording/SaveTemplate`, // 保存体温单增加的数据
+        getPageRowsInfo: `${platform_nurse}SaveTemplate/GetPageRowsInfo`, // 获取分页数据
     },
     /** ***************************病历书写接口************************************************/
     writeMedisine: {

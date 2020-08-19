@@ -2,7 +2,7 @@
 	<div class="respiratory-container">
 		<ckMainNav :navRoute="navRoute" @showDia="handleShowDia"></ckMainNav>
 		<el-container style="height: 100%;">
-			<el-aside width="300px" style="height: 100%; border-right: 2px solid gray;">
+			<el-aside width="300px" style="height: 90%; border-right: 2px solid gray;">
 				<h1 class="caption">病历列表</h1>
 				<div class="desc">
 					<span>床号：{{patientInfo && patientInfo.BED_NO}}</span>
@@ -14,7 +14,7 @@
 					default-active="2"
 					class="el-menu-vertical-demo">
 						<el-submenu v-for="item in leftTree" :key="item.id" :index="item.id">
-							<template slot="title"><div :class="!item.children ? 'hiddenIcon' : ''"><span>{{item.label}}</span></div></template>
+							<template slot="title"><div :class="!item.children ? 'hiddenIcon' : ''" @dblclick="handleShowThisData(item)"><span>{{item.label}}</span></div></template>
 							<div v-if="item.children">
 									<div v-for="(subitem, subindex) in item.children" :key="subindex">
 										<el-menu-item :index="subitem.code" @dblclick.native="handleShowThisData(subitem)">{{subitem.label}}</el-menu-item>
@@ -36,6 +36,7 @@
 						<ckImgBtn icon="ck-imgicon-clinicalreport" @click="handleShowPatient('clinicalReport')">临床报告</ckImgBtn>
 						<ckImgBtn icon="ck-imgicon-position" @click="handleShowPatient('position')">定位</ckImgBtn>
 						<ckImgBtn icon="ck-imgicon-reflesh" @click="handleShowPatient('reflash')">刷新</ckImgBtn>
+						<ckImgBtn icon="ck-imgicon-reflesh" @click="handleShowPrintDia">打印</ckImgBtn>
 					</div>
 					<div class="simple-info">
 						<div class="baseinfo">
@@ -206,6 +207,160 @@
 				></component>
 			</div>
 		</topMenuDia>
+		<medisineRecordHistory
+			:patientId="currentPatient.VISIT_ID"
+			:medisineRecordHistoryDiaVis="medisineRecordHistoryDiaVis"
+			:medisineRecordTree="leftTree"
+		></medisineRecordHistory>
+		<el-dialog
+        title="提示"
+        append-to-body
+        :visible.sync="cccdialogVisible"
+        width="80%">
+            <button v-print="'#printMe'">Print the entire page</button>
+            <div id="printMe" style="background:#60aebf;">
+                <div ref="qrcode"></div>
+                <div ref="echartMain" :style="{width: '300px', height: '300px'}"></div>
+                <input type="number">
+                <input type="time">
+                <input type="checkbox">
+                <input type="radio">
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                
+                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <p>葫芦娃，葫芦娃11111111111</p>
+                <p style="background:yellow;">一根藤上七朵花 </p>
+                <p>小小树藤是我家 啦啦啦啦 </p>
+                <p>叮当当咚咚当当　浇不大</p>
+                <p> 叮当当咚咚当当 是我家</p>
+                <p> 啦啦啦啦</p>
+                <p>...</p>
+                <div ref="qrcode"></div>
+                <div ref="echartMain" :style="{width: '300px', height: '300px'}"></div>
+                <input type="number">
+                <input type="time">
+                <input type="checkbox">
+                <input type="radio">
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                
+                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <p>葫芦娃，葫芦娃222222222222</p>
+                <p style="background:yellow;">一根藤上七朵花 </p>
+                <p>小小树藤是我家 啦啦啦啦 </p>
+                <p>叮当当咚咚当当　浇不大</p>
+                <p> 叮当当咚咚当当 是我家</p>
+                <p> 啦啦啦啦</p>
+                <p>...</p>
+                <div ref="qrcode"></div>
+                <div ref="echartMain" :style="{width: '300px', height: '300px'}"></div>
+                <input type="number">
+                <input type="time">
+                <input type="checkbox">
+                <input type="radio">
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                
+                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <p>葫芦娃，葫芦娃33333333333</p>
+                <p style="background:yellow;">一根藤上七朵花 </p>
+                <p>小小树藤是我家 啦啦啦啦 </p>
+                <p>叮当当咚咚当当　浇不大</p>
+                <p> 叮当当咚咚当当 是我家</p>
+                <p> 啦啦啦啦</p>
+                <p>...</p>
+                <div ref="qrcode"></div>
+                <div ref="echartMain" :style="{width: '300px', height: '300px'}"></div>
+                <input type="number">
+                <input type="time">
+                <input type="checkbox">
+                <input type="radio">
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                
+                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <p>葫芦娃，葫芦娃4444444444</p>
+                <p style="background:yellow;">一根藤上七朵花 </p>
+                <p>小小树藤是我家 啦啦啦啦 </p>
+                <p>叮当当咚咚当当　浇不大</p>
+                <p> 叮当当咚咚当当 是我家</p>
+                <p> 啦啦啦啦</p>
+                <p>...</p>
+                <div ref="qrcode"></div>
+                <div ref="echartMain" :style="{width: '300px', height: '300px'}"></div>
+                <input type="number">
+                <input type="time">
+                <input type="checkbox">
+                <input type="radio">
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+
+                <select>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+                
+                <textarea name="" id="" cols="30" rows="10"></textarea>
+                <p>葫芦娃，葫芦娃666666666666</p>
+                <p style="background:yellow;">一根藤上七朵花 </p>
+                <p>小小树藤是我家 啦啦啦啦 </p>
+                <p>叮当当咚咚当当　浇不大</p>
+                <p> 叮当当咚咚当当 是我家</p>
+                <p> 啦啦啦啦</p>
+                <p>...</p>
+            </div>
+        </el-dialog>
 	</div>
 </template>
 
@@ -214,6 +369,7 @@ import { mapState, createNamespacedHelpers } from 'vuex'
 import moment from 'moment'
 import residentDoctorTopMenu from '@/router/routes/residentDoctorTopMenu'
 import residentDoctorTopMenuDic from '@/router/dictionary/residentDoctorTopMenu'
+import medisineRecordHistory from './components/medisineRecordHistory'
 import * as api from '@/global/api'
 import { deepCopy } from '@/utils/utils'
 import topMenuDia from '../components/index'
@@ -227,6 +383,13 @@ export default {
 	name: 'RespiratoryMedicine',
 	data () {
 		return {
+			cccdialogVisible: false,
+			printObj: {
+                    id: "printMe",
+                    popTitle: 'good print',
+                    extraCss: 'https://www.baidu.com/,https://www.baidu.com/',
+                    extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>'
+                },
 			showTree: false,
 			topMenuDiaTitle: '',
 			topMenuDiaVis: false,
@@ -250,6 +413,7 @@ export default {
 			workbench: '',
 			patientInfoDocTpl: '',
 			getIndex: -1,
+			medisineRecordHistoryDiaVis: false,
 			pageSize: 20,
 			pageNos: 1,
 			total: 0
@@ -340,6 +504,7 @@ export default {
 	components: {
 		topMenuDia,
 		mainRight,
+		medisineRecordHistory,
 		qualityControlDetail (resolve) {
 			require(['../components/qualityControlDetail'], resolve)
 		},
@@ -453,6 +618,9 @@ export default {
 			'GET_DOCTOR',
 			'GET_EMERGENCY_DOCTOR'
 		]),
+		handleShowPrintDia () {
+			this.cccdialogVisible = true
+		},
 		getPatientList (obj) {
 			let args = {
 				cbShowDischargePat: this.showDischargePat ? 'true' : 'false',
@@ -483,6 +651,7 @@ export default {
 			}
 			this.getDoctorOperation(args)
 			this.getPatientInfo(args)
+			this.currentPatient = rowObj
 		},
 		getPatientDocTpl () {
 			this.GET_PAITENTINFO_DOC_TPL().then((res) => {
@@ -513,7 +682,9 @@ export default {
 			if (!obj) return
 			this.leftTree = []
 			this.GET_DOCTOR_OPERATION({
-				VistID: obj.VISIT_ID
+				VistID: obj.VISIT_ID,
+				DepCode: this.deptID,
+				WORKBENCH_CODE: this.benchId
 			}).then((res) => {
 				if (res.code === 1) {
 					this.leftTree = res.values
@@ -564,6 +735,12 @@ export default {
 			})
 		},
 		handleShowThisData (obj, cb) {
+			console.log(obj)
+			if (obj.Tag === 1 && obj.label.indexOf('既往史病历资料') > -1) {
+				// TODO 显示弹窗，展示病历
+				this.medisineRecordHistoryDiaVis = true
+				return
+			}
 			this.mainComponentName = 'contentShow'
 			this.showTree = true
 			this.$nextTick(() => {
@@ -677,7 +854,7 @@ export default {
 			}
 		}
 		.table-decoration {
-			height: calc(100vh - 325px);
+			height: calc(100vh - 300px);
 			overflow-y: auto;
 			border: 1px solid #E8EAED;
 		}
@@ -685,6 +862,20 @@ export default {
 			width: calc(100vw - 318px);
 			left: auto;
 			right: 0;
+		}
+		/deep/ .img-btn {
+			span {
+				width: auto;
+				margin-right: 5px;
+			}
+			span:last-child {
+				vertical-align: super;
+			}
+			.ck-imgicon {
+				width: 25px;
+				height: 25px;
+				background-size: 100% 100%;
+			}
 		}
 		::-webkit-scrollbar-track-piece { //滚动条凹槽的颜色，还可以设置边框属性
 			background-color:#DFDFDF;
@@ -717,6 +908,11 @@ export default {
 		}
 		/deep/ .hiddenIcon + .el-submenu__icon-arrow {
 			display: none;
+		}
+		/deep/ .el-submenu__title {
+			span {
+				user-select: none;
+			}
 		}
 	}
 </style>

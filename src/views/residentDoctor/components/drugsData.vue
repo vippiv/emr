@@ -146,6 +146,7 @@
     .ypboxL {
         border: 1px solid #ebeef5;
         overflow-y: auto;
+        overflow-x: auto;
     }
 
     .card-box {

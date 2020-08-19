@@ -43,6 +43,7 @@
 	.tpl-set-container {
 		height: 100%;
 		background-color: white;
+		padding-left: 5px;
 		/deep/ .el-tabs__item{
 			border: 1px solid #FCFCFC;
 		}

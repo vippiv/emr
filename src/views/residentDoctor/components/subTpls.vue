@@ -288,6 +288,8 @@
                 },
                 // 分页
                 paginationInfo: {
+                    hasName: '',
+                    hasInfo: false,
                     currentPage: 1,
                     total: 0,
                     pageSizes: [20, 30, 40],
@@ -438,9 +440,14 @@
             },
             // 模板切换
             checkChange() {
-                if (this.currentTreeNode) {
-                    this.get_GetInformation(this.currentTreeNode)
-                    this.currentTreeNode = this.currentTreeNode
+                // if (this.currentTreeNode) {
+                //     this.get_GetInformation(this.currentTreeNode)
+                //     this.currentTreeNode = this.currentTreeNode
+                // }
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
                 }
             },
             // 右边列表获取
@@ -463,6 +470,7 @@
                         this.paginationInfo.total = 0
                         this.tableData = []
                     }
+                    this.hasInfo = false
                 })
             },
             // 左边树获取
@@ -621,7 +629,26 @@
                     pageSize: this.paginationInfo.pageSize,
                     pageNos: this.paginationInfo.currentPage
                 }
+                // 存查询的名称
+                this.hasName = params.plateName
                 this.DOCTOR_GETINFOLISTBYSELECT(params).then((res) => {
+                    this.hasInfo = true
+                    this.paginationInfo.total = res.values.total
+                    this.tableData = res.values.values
+                })
+            },
+            hasInfoSelect() {
+                // 分页查询
+                const params = {
+                    plateName: this.hasName,
+                    cbWoman: this.form.checkList.indexOf('woman') > -1 ? '1' : '0',
+                    cbMan: this.form.checkList.indexOf('man') > -1 ? '1' : '0',
+                    cbTY: this.form.checkList.indexOf('ty') > -1 ? '1' : '0',
+                    pageSize: this.paginationInfo.pageSize,
+                    pageNos: this.paginationInfo.currentPage
+                }
+                this.DOCTOR_GETINFOLISTBYSELECT(params).then((res) => {
+                    this.hasInfo = true
                     this.paginationInfo.total = res.values.total
                     this.tableData = res.values.values
                 })
@@ -868,14 +895,20 @@
                 this.beforeStatus = true
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`)
                 this.paginationInfo.pageSize = val
-                this.get_GetInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
+                }
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`)
                 this.paginationInfo.currentPage = val
-                this.get_GetInformation()
+                if (this.hasInfo) {
+                    this.hasInfoSelect()
+                } else {
+                    this.get_GetInformation()
+                }
             },
         }
     }
@@ -911,28 +944,6 @@
                     margin-right: 15px;
                 }
             }
-        }
-    }
-
-    .imgBtnBox {
-        margin-bottom: 15px;
-        
-        .imgBtn-item {
-            display: inline-flex;
-            justify-content: space-evenly;
-            line-height: 2.7;
-        }
-    }
-
-    /deep/.img-btn>span {
-        min-width: 34px !important;
-
-        &:nth-child(1) {
-            margin-right: 8px;
-        }
-
-        &:nth-child(2) {
-            margin-right: 10px;
         }
     }
 
@@ -999,5 +1010,32 @@
                 color: white;
             }
         }
+    }
+
+    .imgBtnBox {
+        margin-bottom: 15px;
+
+        .imgBtn-item {
+            display: inline-flex;
+            justify-content: space-evenly;
+            line-height: 2.7;
+        }
+    }
+
+    /deep/.img-btn>span {
+        min-width: 34px !important;
+
+        &:nth-child(1) {
+            margin-right: 8px;
+        }
+
+        &:nth-child(2) {
+            margin-right: 10px;
+        }
+    }
+
+    /deep/.bigimg {
+        height: 34px !important;
+        width: 34px;
     }
 </style>
